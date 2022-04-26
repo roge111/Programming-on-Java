@@ -14,19 +14,6 @@
       <void property="street">
        <string>Street 1</string>
       </void>
-      <void property="town">
-<!--       <object class="test.lab.common.client.Location">-->
-<!--        <void property="x">-->
-<!--         <int>23</int>-->
-<!--        </void>-->
-<!--        <void property="y">-->
-<!--         <int>35</int>-->
-<!--        </void>-->
-<!--        <void property="z">-->
-<!--         <float>67.0</float>-->
-<!--        </void>-->
-<!--       </object>-->
-      </void>
      </object>
     </void>
     <void property="type">
