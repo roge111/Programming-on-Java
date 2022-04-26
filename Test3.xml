@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="16.0.2" class="java.beans.XMLDecoder">
+ <object class="test.lab.common.client.Product">
+  <void property="manufactureCost">
+   <int>23</int>
+  </void>
+  <void property="manufacturer">
+   <object class="test.lab.common.client.Organization">
+    <void property="fullName">
+     <string>aspfc</string>
+    </void>
+    <void property="name">
+     <string>Prof</string>
+    </void>
+    <void property="postalAddress">
+     <object class="test.lab.common.client.Address">
+      <void property="street">
+       <string>Carla</string>
+      </void>
+      <void property="town">
+       <object class="test.lab.common.client.Location">
+        <void property="x">
+         <int>34</int>
+        </void>
+        <void property="y">
+         <int>43</int>
+        </void>
+        <void property="z">
+         <float>23.0</float>
+        </void>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="type">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>test.lab.common.client.OrganizationType</class>
+      <string>PUBLIC</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="name">
+   <string>Prod</string>
+  </void>
+  <void property="partNumber">
+   <string>234134</string>
+  </void>
+  <void property="price">
+   <double>344.0</double>
+  </void>
+  <void property="unitOfMeasure">
+   <object class="java.lang.Enum" method="valueOf">
+    <class>test.lab.common.client.UnitOfMeasure</class>
+    <string>LITERS</string>
+   </object>
+  </void>
+ </object>
+</java>
