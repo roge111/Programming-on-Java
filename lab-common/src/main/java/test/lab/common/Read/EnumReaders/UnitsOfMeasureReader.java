@@ -1,11 +1,14 @@
 package test.lab.common.Read.EnumReaders;
 
+import test.lab.common.client.UnitOfMeasure;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
-import test.lab.common.client.UnitOfMeasure;
+public final class UnitsOfMeasureReader {
+    private UnitsOfMeasureReader() {
+    }
 
-public class UnitsOfMeasureReader {
     public static boolean checkExist(String toContains) {
         return Arrays.stream(UnitOfMeasure.values()).anyMatch((UnitOfMeasure) -> UnitOfMeasure.name().equals(toContains));
     }
@@ -15,7 +18,7 @@ public class UnitsOfMeasureReader {
         System.out.println(messageFoConsole + "Выберите еденицы измерения из представленных (" + Arrays.asList(UnitOfMeasure.values()) + "): ");
         String toContains = in.nextLine().trim();
 
-        if ((!checkExist(toContains)) && !canBeNull && !toContains.equals("") || !canBeNull && toContains.equals("") || canBeNull && !toContains.equals("")) {
+        if ((!checkExist(toContains)) && !canBeNull && !("").equals(toContains) || !canBeNull && ("").equals(toContains) || canBeNull && ("").equals(toContains)) {
             while (!checkExist(toContains)) {
                 System.out.println("Вы ввели не существующее значение из представленных. Попробуйте снова: ");
                 toContains = in.nextLine().trim();
@@ -23,7 +26,7 @@ public class UnitsOfMeasureReader {
             }
         }
 
-        if (canBeNull && toContains.equals("")) {
+        if (canBeNull && ("").equals(toContains)) {
             return null;
         }
 

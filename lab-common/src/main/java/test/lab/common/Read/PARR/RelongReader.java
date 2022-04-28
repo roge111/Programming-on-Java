@@ -2,7 +2,10 @@ package test.lab.common.Read.PARR;
 
 import java.util.Scanner;
 
-public class RelongReader {
+public final class RelongReader {
+    private RelongReader() {
+    }
+
     public static long read(String messageForConsole, int limit, String type) {
         System.out.print(messageForConsole);
         Scanner sc = new Scanner(System.in);

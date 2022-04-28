@@ -2,7 +2,10 @@ package test.lab.common.Read.PARR;
 
 import java.util.Scanner;
 
-public class RefDoubleReader {
+public final class RefDoubleReader {
+    private RefDoubleReader() {
+    }
+
     public static Double read(String messageForConsole, int limit, String type) {
         System.out.println(messageForConsole);
         Scanner sc = new Scanner(System.in);
@@ -28,6 +31,7 @@ public class RefDoubleReader {
                             System.out.println("Вы ввели не подходящее значение. " + "Оно должно быть меньше " + limit + ". Попробуйте снова: ");
                         }
                         break;
+                    default:
                 }
             } catch (NumberFormatException ex) {
                 System.out.println("Введите число заново.");

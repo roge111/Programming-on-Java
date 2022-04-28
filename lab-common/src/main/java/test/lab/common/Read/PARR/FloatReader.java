@@ -2,7 +2,10 @@ package test.lab.common.Read.PARR;
 
 import java.util.Scanner;
 
-public class FloatReader {
+public final class FloatReader {
+    private FloatReader() {
+    }
+
     public static Float read(String messageForConsole, boolean canBeNull) {
         Scanner in = new Scanner(System.in);
         System.out.print(messageForConsole);
@@ -11,16 +14,13 @@ public class FloatReader {
         while (!end) {
             try {
                 readDouble = Float.parseFloat(in.nextLine().trim());
-                if (canBeNull && readDouble.equals("")) {
-                    {
-                        end = true;
-                    }
+                if (canBeNull && ("").equals(readDouble)) {
+                    end = true;
                     return null;
                 }
-                if (!canBeNull && readDouble.equals("")) {
-                    {
-                        System.out.println("Поле не может быть null. Попробуйте снова: ");
-                    }
+                if (!canBeNull && ("").equals(readDouble)) {
+                    System.out.println("Поле не может быть null. Попробуйте снова: ");
+
                 }
                 if (readDouble instanceof Float) {
                     end = true;

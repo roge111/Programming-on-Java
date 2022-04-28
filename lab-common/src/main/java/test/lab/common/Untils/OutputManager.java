@@ -1,6 +1,5 @@
 package test.lab.common.Untils;
 
-import java.awt.*;
 import java.io.PrintWriter;
 
 
@@ -24,9 +23,9 @@ public class OutputManager {
         printWriter.write("\n");
     }
 
-    public void printlnImportantColorMessage(String string, Color color) {
-        printlnImportantMessage(color.toString() + string + "\u001B[0m");
-    }
+//    public void printlnImportantColorMessage(String string, Color color) {
+//        printlnImportantMessage(color.toString() + string + "\u001B[0m");
+//    }
 
     private enum Massegenf {
         ON,
