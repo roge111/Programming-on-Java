@@ -1,15 +1,15 @@
 package test.lab.common.commands;
 
-public class Exit extends Command{
-    private  final CommandReceiver commandReceiver;
+public class Exit extends Command {
+    private final CommandReceiver commandReceiver;
 
-    public Exit (CommandReceiver commandReceiver){
+    public Exit(CommandReceiver commandReceiver) {
         this.commandReceiver = commandReceiver;
     }
 
     @Override
-    protected  void execute(String[] args){
-        if (args.length > 1){
+    protected void execute(String[] args) {
+        if (args.length > 1) {
             System.out.println("Введен не нужный аргумент. Команда приведена к базовому виду команды exit");
 
         }
@@ -17,9 +17,10 @@ public class Exit extends Command{
 
 
     }
+
     @Override
-    protected void writeInfo(){
-        System.out.println( "Команда exit - завершить программу без сохранения.");
+    protected void writeInfo() {
+        System.out.println("Команда exit - завершить программу без сохранения.");
 
     }
 

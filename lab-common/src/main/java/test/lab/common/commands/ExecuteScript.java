@@ -1,20 +1,25 @@
 package test.lab.common.commands;
+
 import test.lab.common.commands.Command;
 import test.lab.common.commands.CommandReceiver;
 
-public class ExecuteScript extends Command{
-    private  final CommandReceiver commandReceiver;
+public class ExecuteScript extends Command {
+    private final CommandReceiver commandReceiver;
     private static String path;
 
-    public ExecuteScript (CommandReceiver commandReceiver){
+    public ExecuteScript(CommandReceiver commandReceiver) {
         this.commandReceiver = commandReceiver;
     }
 
     @Override
     protected void execute(String[] args) throws StackOverflowError {
         try {
-            if (args.length == 2) { path = args[1]; commandReceiver.executeScript(args[1]); }
-            else { System.out.println("Некорректное количество аргументов. Для справки напишите help."); }
+            if (args.length == 2) {
+                path = args[1];
+                commandReceiver.executeScript(args[1]);
+            } else {
+                System.out.println("Некорректное количество аргументов. Для справки напишите help.");
+            }
         } catch (StackOverflowError ex) {
             System.out.println("Ошибка! Обнаружен выход за пределы стека.");
         }
@@ -26,11 +31,10 @@ public class ExecuteScript extends Command{
                 "В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
     }
 
-    public static String getPath(){
+    public static String getPath() {
         return path;
 
     }
-
 
 
 }

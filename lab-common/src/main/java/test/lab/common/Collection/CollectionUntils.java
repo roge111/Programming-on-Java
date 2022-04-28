@@ -4,17 +4,17 @@ import test.lab.common.client.Product;
 
 
 public class CollectionUntils {
-    public static  boolean checkExist(Integer ID){
-        for (Product product:CollectionManager.getLinkedList()){
+    public static boolean checkExist(Integer ID) {
+        for (Product product : CollectionManager.getLinkedList()) {
             return product.getId().equals(ID);
         }
         return false;
     }
 
-    static void display(Product product){
-        System.out.println("ID элемента: "+product.getId());
+    static void display(Product product) {
+        System.out.println("ID элемента: " + product.getId());
         System.out.println("Координата X: " + product.getCoordinates().getX());
-        System.out.println("Название продукта: "+product.getName());
+        System.out.println("Название продукта: " + product.getName());
 
         System.out.println("Координата Y: " + product.getCoordinates().getY());
         System.out.println("Дата создание продукта: " + product.getCreationDate());

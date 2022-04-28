@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Console {
-    void startInteractiveMode() throws IOException{
+    void startInteractiveMode() throws IOException {
         CommandInvoker commandInvoker = new CommandInvoker();
         CommandReceiver commandReceiver = new CommandReceiver(commandInvoker);
         System.out.println("Введите первую команду. Чтобы узнать все команды введите 'help'.");
@@ -33,14 +33,12 @@ public class Console {
         commandInvoker.register("remove_greater", new RemoveGreater(commandReceiver));
 
 
-        try (Scanner scanner = new Scanner(System.in)){
-            while (scanner.hasNextLine()){
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (scanner.hasNextLine()) {
                 commandInvoker.executeCommand(scanner.nextLine().trim().split(" "));
             }
         }
     }
-
-
 
 
 }

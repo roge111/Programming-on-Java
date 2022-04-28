@@ -12,12 +12,15 @@ public class ReIntReader {
             try {
                 readDouble = Integer.parseInt(in.nextLine().trim());
                 if (canBeNull && readDouble.equals("")) {
-                    {end = true;}
+                    {
+                        end = true;
+                    }
                     return null;
                 }
                 if (!canBeNull && readDouble.equals("")) {
                     {
-                        System.out.println("Поле не может быть null. Попробуйте снова: "); }
+                        System.out.println("Поле не может быть null. Попробуйте снова: ");
+                    }
                 }
                 if (readDouble instanceof Integer) {
                     end = true;

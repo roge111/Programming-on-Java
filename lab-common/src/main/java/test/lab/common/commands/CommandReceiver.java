@@ -14,136 +14,135 @@ import java.nio.charset.StandardCharsets;
 
 
 public class CommandReceiver {
+    static final int C151 = 15;
     private final CommandInvoker commandInvoker;
+
+    private final int c15 = C151;
 
     public CommandReceiver(CommandInvoker commandInvoker) {
         this.commandInvoker = commandInvoker;
     }
 
-     public void help(){
+    public void help() {
         commandInvoker.getCommandMap().forEach((name, command) -> command.writeInfo());
-     }
-    public  void  count_greater_than_manufacturer(String manufacturer){
-        CollectionManager.count_greater_than_manufacturer(manufacturer);
     }
 
-     public void info(){
+    public void countgreaterthanmanufacturer(String manufacturer) {
+        CollectionManager.countgreaterthanmanufacturer(manufacturer);
+    }
+
+    public void info() {
         CollectionManager.getInfo();
-     }
+    }
 
-     public  void show(){
+    public void show() {
         CollectionManager.show();
-     }
+    }
 
-     public void  add(){
+    public void add() {
         CollectionManager.add(ElementCreator.creatProduct());
         System.out.println("Элемент добавлен в коллекцию.");
-     }
+    }
 
-     public void update(String ID){
-         Integer productId;
-         try{
-             productId = Integer.parseInt(ID);
-             if (CollectionUntils.checkExist(productId)){
-                 CollectionManager.update(ElementCreator.creatProduct(), productId);
-
-             } else System.out.println("Элемента с таким ID нет в коллекции.");
-
-         } catch (NumberFormatException e){
-             System.out.println("Команда не выполнена. Был введен некорректный аргумент.");
-
-         }
-     }
-
-     public void remivw_by_id(String ID){
+    public void update(String iD) {
         Integer productId;
-        try{
-            productId = Integer.parseInt(ID);
-            CollectionManager.remove_by_id(productId);
-        } catch (NumberFormatException e){
+        try {
+            productId = Integer.parseInt(iD);
+            if (CollectionUntils.checkExist(productId)) {
+                CollectionManager.update(ElementCreator.creatProduct(), productId);
+
+            } else {
+                System.out.println("Элемента с таким ID нет в коллекции.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Команда не выполнена. Был введен некорректный аргумент.");
+
+        }
+    }
+
+    public void remivwbyid(String iD) {
+        Integer productId;
+        try {
+            productId = Integer.parseInt(iD);
+            CollectionManager.removebyid(productId);
+        } catch (NumberFormatException e) {
             System.out.println("Команда не выполнена. Был введен некорректный аргумент.");
         }
-     }
+    }
 
-     public void clear(){
+    public void clear() {
         CollectionManager.clear();
         System.out.println("Коллекция успешно очищена.");
-     }
+    }
 
-     public void exit(){
+    public void exit() {
         System.out.println("Завершение работы программы.");
         System.exit(0);
-     }
+    }
 
-     public void head(){
+    public void head() {
         CollectionManager.head();
-     }
+    }
 
 
+    public void removeallbymanufacturecost(Integer manufactureCost) {
+        CollectionManager.removeallbymanufacturecost(manufactureCost);
+    }
 
-     public void remove_all_by_manufacture_cost(Integer manufactureCost){
-        CollectionManager.remove_all_by_manufacture_cost(manufactureCost);
-     }
+    public void removegreater(Integer id) {
 
-     public void remove_greater(Integer id){
-        CollectionManager.remove_greater(id);
-     }
+        CollectionManager.removegreater(id);
+    }
 
-     public  void executeScript(String path){
+    public void executeScript(String path) {
         String line;
         String command;
         ArrayList<String> parameters = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(path)), StandardCharsets.UTF_8))){
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(path)), StandardCharsets.UTF_8))) {
 
-            while((line = bufferedReader.readLine()) != null){
-                if (line.split(" ")[0].matches("add|update|")){
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.split(" ")[0].matches("add|update|")) {
                     command = line;
-                    for (int i = 0; i < 15; i++){
+                    for (int i = 0; i < c15; i++) {
                         if (line != null) {
                             line = bufferedReader.readLine();
                             parameters.add(line);
                         } else {
-                            System.out.println("Не хватка праметров для создания объектов.");
+                            System.out.println("Не хватка параметров для создания объектов.");
                             break;
                         }
                     }
-
                     Product product = ElementCreator.creatScriptProduct(parameters);
-
-                    switch (command.split(" ")[0]){
+                    switch (command.split(" ")[0]) {
                         case "add":
                             CollectionManager.add(product);
                             break;
                         case "update":
                             CollectionManager.update(product, Integer.parseInt(command.split(" ")[1]));
-
+                            break;
+                        default: throw new IllegalStateException("Unexpected value: " + command.split(" ")[0]);
                     }
-                } else if (line.split(" ")[0].equals("execute_script")
-                        && line.split(" ")[1].equals(ExecuteScript.getPath()) ){
+                } else if (line.split(" ")[0].equals("execute_script") && line.split(" ")[1].equals(ExecuteScript.getPath())) {
                     System.out.println("Пресечена попытка рекурсивного вызова скрипта.");
-                } else commandInvoker.executeCommand(line.split(" "));
+                } else {
+                    commandInvoker.executeCommand(line.split(" "));
+                }
             }
-
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Ошибка!" + e.getMessage());
-
         }
-
-     }
-
-     public void remove_first(){
-        CollectionManager.remove_first();
-        System.out.println("Первый элемент удален.");
-     }
-
-    public void count_by_manufacturer(String manufacturer){
-        CollectionManager.count_by_manufacturer(manufacturer);
     }
 
+    public void removefirst() {
+        CollectionManager.removefirst();
+        System.out.println("Первый элемент удален.");
+    }
 
-
-
+    public void countbymanufacturer(String manufacturer) {
+        CollectionManager.countbymanufacturer(manufacturer);
+    }
 
 
 }

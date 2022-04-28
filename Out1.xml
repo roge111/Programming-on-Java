@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="16.0.2" class="java.beans.XMLDecoder">
+<java version="16.0.2" class="test.lab.common.Collection.CollectionManager">
  <object class="test.lab.common.client.Product">
   <void property="manufactureCost">
    <int>230</int>
@@ -13,19 +13,6 @@
      <object class="test.lab.common.client.Address">
       <void property="street">
        <string>Street 1</string>
-      </void>
-      <void property="town">
-<!--       <object class="test.lab.common.client.Location">-->
-<!--        <void property="x">-->
-<!--         <int>23</int>-->
-<!--        </void>-->
-<!--        <void property="y">-->
-<!--         <int>35</int>-->
-<!--        </void>-->
-<!--        <void property="z">-->
-<!--         <float>67.0</float>-->
-<!--        </void>-->
-<!--       </object>-->
       </void>
      </object>
     </void>

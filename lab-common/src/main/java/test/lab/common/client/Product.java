@@ -1,9 +1,7 @@
 package test.lab.common.client;
+
 import java.util.Date;
 import java.util.Objects;
-
-
-
 
 
 public class Product {
@@ -17,11 +15,11 @@ public class Product {
     private UnitOfMeasure unitOfMeasure; //Поле не может быть null
     private Organization manufacturer; //Поле не может быть null
 
-    public Product(){
+    public Product() {
 
     }
 
-    public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer){
+    public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
 //        this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -32,7 +30,8 @@ public class Product {
         this.unitOfMeasure = unitOfMeasure;
         this.manufacturer = manufacturer;
     }
-    public Integer getId(){
+
+    public Integer getId() {
         return id;
     }
 
@@ -79,6 +78,7 @@ public class Product {
     public void setPartNumber(String partNumber) {
         this.partNumber = partNumber;
     }
+
     public Integer getManufactureCost() {
         return manufactureCost;
     }
@@ -100,30 +100,30 @@ public class Product {
     }
 
 
-
     public void setManufacturer(Organization manufacturer) {
         this.manufacturer = manufacturer;
     }
+
     @Override
-    public boolean equals(Object o){
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Product product = (Product) o;
-        return id.equals(product.id) &&
-                Objects.equals(name, product.name) &&
-                coordinates.equals(product.coordinates) &&
-                creationDate.equals(product.creationDate) &&
-                Objects.equals(manufacturer, product.manufacturer);
+        return id.equals(product.id) && Objects.equals(name, product.name) && coordinates.equals(product.coordinates) && creationDate.equals(product.creationDate) && Objects.equals(manufacturer, product.manufacturer);
     }
 
     @Override
-    public  int hashCode(){
+    public int hashCode() {
         return Objects.hash(id, name, coordinates, creationDate, manufacturer);
     }
 
-    public int compareTo(Product ProductId) {
-        return (this.id - ProductId.getId());
+    public int compareTo(Product productId) {
+        return (this.id - productId.getId());
     }
-    }
+}
 
 

@@ -4,5 +4,5 @@ public enum OrganizationType {
     COMMERCIAL,
     PUBLIC,
     GOVERMENT,
-    OPEN_JOINT_STOCK_COMPANY;
+    OPEN_JOINT_STOCK_COMPANY
 }

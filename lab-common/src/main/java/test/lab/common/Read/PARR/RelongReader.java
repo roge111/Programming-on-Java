@@ -13,12 +13,18 @@ public class RelongReader {
                 result = Long.parseLong(sc.nextLine().trim());
                 switch (type) {
                     case ("MIN"):
-                        if (result > limit) { end = true; }
-                        else { System.out.print("Вы ввели не подходящее значение. " + "Оно должно быть больше " + limit + ". Попробуйте снова: ");}
+                        if (result > limit) {
+                            end = true;
+                        } else {
+                            System.out.print("Вы ввели не подходящее значение. " + "Оно должно быть больше " + limit + ". Попробуйте снова: ");
+                        }
                         break;
                     case ("MAX"):
-                        if (result < limit) { end = true; }
-                        else { System.out.print("Вы ввели не подходящее значение. " + "Оно должно быть меньше " + limit + ". Попробуйте снова: ");}
+                        if (result < limit) {
+                            end = true;
+                        } else {
+                            System.out.print("Вы ввели не подходящее значение. " + "Оно должно быть меньше " + limit + ". Попробуйте снова: ");
+                        }
                         break;
                 }
             } catch (NumberFormatException ex) {
