@@ -1,7 +1,5 @@
 package test.lab.common.commands;
 
-import test.lab.common.client.Organization;
-
 public class CountGreaterThanManufacturer extends Command {
 
 

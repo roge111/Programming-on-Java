@@ -1,5 +1,7 @@
 package test.lab.common.client;
 
+import test.lab.common.Collection.IDGenerator;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,7 +22,7 @@ public class Product {
     }
 
     public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
-//        this.id = id;
+        this.id = IDGenerator.gernerateID();
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;

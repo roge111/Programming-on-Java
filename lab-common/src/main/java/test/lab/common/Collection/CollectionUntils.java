@@ -3,10 +3,13 @@ package test.lab.common.Collection;
 import test.lab.common.client.Product;
 
 
-public class CollectionUntils {
-    public static boolean checkExist(Integer ID) {
+public final class CollectionUntils {
+    private CollectionUntils() {
+    }
+
+    public static boolean checkExist(Integer iD) {
         for (Product product : CollectionManager.getLinkedList()) {
-            return product.getId().equals(ID);
+            return product.getId().equals(iD);
         }
         return false;
     }

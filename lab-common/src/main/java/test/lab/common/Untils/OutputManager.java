@@ -1,19 +1,13 @@
 package test.lab.common.Untils;
 
 import java.awt.*;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 
 public class OutputManager {
 
     private final PrintWriter printWriter;
-    private Massegenf massegenf = Massegenf.ON;
-
-    private enum Massegenf {
-        ON,
-        OFF
-    }
+    private final Massegenf massegenf = Massegenf.ON;
 
     public OutputManager(PrintWriter printWriter) {
         this.printWriter = printWriter;
@@ -32,6 +26,11 @@ public class OutputManager {
 
     public void printlnImportantColorMessage(String string, Color color) {
         printlnImportantMessage(color.toString() + string + "\u001B[0m");
+    }
+
+    private enum Massegenf {
+        ON,
+        OFF
     }
 
 

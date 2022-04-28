@@ -2,7 +2,7 @@ package test.lab.common.commands;
 
 public class RemoveFirst extends Command {
 
-    public CommandReceiver commandReceiver;
+    private final CommandReceiver commandReceiver;
 
     public RemoveFirst(CommandReceiver commandReceiver) {
         this.commandReceiver = commandReceiver;

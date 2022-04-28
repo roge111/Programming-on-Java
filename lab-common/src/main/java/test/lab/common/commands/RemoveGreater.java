@@ -1,7 +1,7 @@
 package test.lab.common.commands;
 
 public class RemoveGreater extends Command {
-    public CommandReceiver commandReceiver;
+    private final CommandReceiver commandReceiver;
 
     public RemoveGreater(CommandReceiver commandReceiver) {
         this.commandReceiver = commandReceiver;

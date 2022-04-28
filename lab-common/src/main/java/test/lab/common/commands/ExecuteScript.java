@@ -1,14 +1,16 @@
 package test.lab.common.commands;
 
-import test.lab.common.commands.Command;
-import test.lab.common.commands.CommandReceiver;
-
 public class ExecuteScript extends Command {
-    private final CommandReceiver commandReceiver;
     private static String path;
+    private final CommandReceiver commandReceiver;
 
     public ExecuteScript(CommandReceiver commandReceiver) {
         this.commandReceiver = commandReceiver;
+    }
+
+    public static String getPath() {
+        return path;
+
     }
 
     @Override
@@ -27,13 +29,7 @@ public class ExecuteScript extends Command {
 
     @Override
     protected void writeInfo() {
-        System.out.println("Команда execute_script. Синтаксис: execute_script file_name – считать и исполнить скрипт из указанного файла. " +
-                "В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
-    }
-
-    public static String getPath() {
-        return path;
-
+        System.out.println("Команда execute_script. Синтаксис: execute_script file_name – считать и исполнить скрипт из указанного файла. " + "В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
     }
 
 

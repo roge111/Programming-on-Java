@@ -3,32 +3,35 @@ package test.lab.common.Collection;
 import java.util.HashSet;
 import java.util.Random;
 
-public class IDGenerator {
-    private static HashSet<Integer> hashSetID = new HashSet<>();
+public final class IDGenerator {
+    private static final HashSet<Integer> HASH_SET_ID = new HashSet<>();
+
+    private IDGenerator() {
+    }
 
     public static Integer gernerateID() {
         Integer id = new Random().nextInt(Integer.MAX_VALUE);
 
-        if (hashSetID.contains(id)) {
-            while (hashSetID.contains(id)) {
+        if (HASH_SET_ID.contains(id)) {
+            while (HASH_SET_ID.contains(id)) {
                 id = new Random().nextInt(Integer.MAX_VALUE);
             }
         }
 
-        hashSetID.add(id);
+        HASH_SET_ID.add(id);
         return id;
     }
 
-    static Integer generateID(Integer ID) {
-        Integer id = ID;
+    static Integer generateID(Integer iD) {
+        Integer id = iD;
 
-        if (hashSetID.contains(id)) {
-            while (hashSetID.contains(id)) {
+        if (HASH_SET_ID.contains(id)) {
+            while (HASH_SET_ID.contains(id)) {
                 id = new Random().nextInt(Integer.MAX_VALUE);
             }
         }
 
-        hashSetID.add(id);
+        HASH_SET_ID.add(id);
         return id;
     }
 }

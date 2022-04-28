@@ -1,7 +1,23 @@
 package test.lab.common;
 
 import test.lab.common.Collection.CollectionManager;
-import test.lab.common.commands.*;
+import test.lab.common.commands.Add;
+import test.lab.common.commands.Clear;
+import test.lab.common.commands.CommandInvoker;
+import test.lab.common.commands.CommandReceiver;
+import test.lab.common.commands.CountByManufacturer;
+import test.lab.common.commands.CountGreaterThanManufacturer;
+import test.lab.common.commands.ExecuteScript;
+import test.lab.common.commands.Exit;
+import test.lab.common.commands.Head;
+import test.lab.common.commands.Help;
+import test.lab.common.commands.RemoveAllByManufactureCost;
+import test.lab.common.commands.RemoveByID;
+import test.lab.common.commands.RemoveFirst;
+import test.lab.common.commands.RemoveGreater;
+import test.lab.common.commands.Save;
+import test.lab.common.commands.Show;
+import test.lab.common.commands.Update;
 
 import java.io.IOException;
 import java.util.Scanner;

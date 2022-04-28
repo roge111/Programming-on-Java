@@ -2,11 +2,14 @@ package test.lab.common.Read.EnumReaders;
 
 import test.lab.common.client.OrganizationType;
 
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Scanner;
 
-public class TypeofOrganizationReader {
-    public  static boolean checkExist(String toContains){
+public final class TypeofOrganizationReader {
+    private TypeofOrganizationReader() {
+    }
+
+    public static boolean checkExist(String toContains) {
         return Arrays.stream(OrganizationType.values()).anyMatch((OrganizationType) -> OrganizationType.name().equals(toContains));
 
     }
@@ -16,7 +19,7 @@ public class TypeofOrganizationReader {
         System.out.print("Введите тип организации из представленных(" + Arrays.asList(OrganizationType.values()) + "): ");
         String toContains = in.nextLine().trim();
 
-        if ((!checkExist(toContains)) && !canBeNull && !toContains.equals("") || !canBeNull && toContains.equals("") || canBeNull && !toContains.equals("")) {
+        if ((!("").equals(toContains) && !canBeNull && !checkExist(toContains)) || !canBeNull && ("").equals(toContains) || canBeNull && !("").equals(toContains)) {
             while (!checkExist(toContains)) {
                 System.out.print("Вы ввели несуществующее значение из представленных. Попробуйте снова: ");
                 toContains = in.nextLine().trim();
@@ -24,10 +27,11 @@ public class TypeofOrganizationReader {
             }
         }
 
-        if (canBeNull && toContains.equals("")) { return null; }
+        if (canBeNull && ("").equals(toContains)) {
+            return null;
+        }
 
         return Enum.valueOf(OrganizationType.class, toContains);
-
 
 
     }

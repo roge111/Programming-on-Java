@@ -38,6 +38,7 @@ public final class ElementCreator {
     static final int C85 = 85;
     static final int C0 = 0;
     static final int C1435 = 1435;
+
     private ElementCreator() {
 
     }
@@ -98,19 +99,25 @@ public final class ElementCreator {
         } else {
             System.out.println("Один из параметров не соответствует требованиям.");
         }
-
         return null;
     }
 
+    private static boolean valAr2(ArrayList<String> parameters) {
+        return !parameters.get(C0).isEmpty() && !parameters.get(C1).isEmpty() && !parameters.get(C2).isEmpty() && !parameters.get(C3).isEmpty() && !parameters.get(C4).isEmpty();
+    }
+
+    private static boolean valAr(ArrayList<String> parameters) {
+        boolean i = valAr2(parameters);
+        return ((i || parameters.get(C4).isEmpty() && !parameters.get(C5).isEmpty() || parameters.get(C5).isEmpty() && (UnitsOfMeasureReader.checkExist(parameters.get(C6)) || parameters.get(C6).isEmpty()) && !parameters.get(C7).isEmpty() && !parameters.get(C8).isEmpty() || parameters.get(C8).isEmpty() && TypeofOrganizationReader.checkExist(parameters.get(C9)) || parameters.get(C9).isEmpty() && !parameters.get(C10).isEmpty() || parameters.get(C10).isEmpty()));
+    }
 
     private static boolean validateArray(ArrayList<String> parameters) {
         try {
-            return (!parameters.get(C0).isEmpty() && !parameters.get(C1).isEmpty() && !parameters.get(C2).isEmpty() && !parameters.get(C3).isEmpty() && !parameters.get(C4).isEmpty() || parameters.get(C4).isEmpty() && !parameters.get(C5).isEmpty() || parameters.get(C5).isEmpty() && (UnitsOfMeasureReader.checkExist(parameters.get(C6)) || parameters.get(C6).isEmpty()) && !parameters.get(C7).isEmpty() && !parameters.get(C8).isEmpty() || parameters.get(C8).isEmpty() && TypeofOrganizationReader.checkExist(parameters.get(C9)) || parameters.get(C9).isEmpty() && !parameters.get(C10).isEmpty() || parameters.get(C10).isEmpty() && !parameters.get(C11).isEmpty() && !parameters.get(C12).isEmpty() && !parameters.get(C13).isEmpty() && !parameters.get(C14).isEmpty());
-
+            boolean i = valAr(parameters);
+            return i && !parameters.get(C11).isEmpty() && !parameters.get(C12).isEmpty() && !parameters.get(C13).isEmpty() && !parameters.get(C14).isEmpty();
         } catch (NumberFormatException ex) {
             return false;
         }
     }
-
 
 }

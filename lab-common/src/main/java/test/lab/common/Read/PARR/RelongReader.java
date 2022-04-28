@@ -26,6 +26,7 @@ public class RelongReader {
                             System.out.print("Вы ввели не подходящее значение. " + "Оно должно быть меньше " + limit + ". Попробуйте снова: ");
                         }
                         break;
+                    default:
                 }
             } catch (NumberFormatException ex) {
                 System.out.print("Вы должны ввести число, попробуйте снова: ");

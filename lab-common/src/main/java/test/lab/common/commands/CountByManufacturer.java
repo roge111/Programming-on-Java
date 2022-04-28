@@ -1,7 +1,5 @@
 package test.lab.common.commands;
 
-import test.lab.common.client.Organization;
-
 public class CountByManufacturer extends Command {
 
     public final CommandReceiver commandReceiver;
