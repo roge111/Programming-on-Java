@@ -19,11 +19,10 @@ import test.lab.common.commands.Save;
 import test.lab.common.commands.Show;
 import test.lab.common.commands.Update;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Console {
-    void startInteractiveMode() throws IOException {
+    void startInteractiveMode() {
         CommandInvoker commandInvoker = new CommandInvoker();
         CommandReceiver commandReceiver = new CommandReceiver(commandInvoker);
         System.out.println("Введите первую команду. Чтобы узнать все команды введите 'help'.");
