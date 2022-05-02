@@ -63,8 +63,8 @@ public class Organization implements Comparable<Organization> {
     }
 
 
-    public int compareTo(Organization porganization) {
-        return (this.id - porganization.getId());
+    public int compareTo(Organization compared) {
+        return (this.id - compared.getId());
     }
 
     public void setOrganiztion(String organiztion) {

@@ -142,7 +142,7 @@ public class CollectionManager {
     }
 
     public static void removeFirst() {
-        Iterator i = linkedList.iterator();
+        Iterator<Product> i = linkedList.iterator();
         if (i.hasNext()) {
             i.next();
             i.remove();
