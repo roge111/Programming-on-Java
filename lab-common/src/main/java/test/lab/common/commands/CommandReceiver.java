@@ -27,8 +27,8 @@ public class CommandReceiver {
         commandInvoker.getCommandMap().forEach((name, command) -> command.writeInfo());
     }
 
-    public void countgreaterthanmanufacturer(String manufacturer) {
-        CollectionManager.countgreaterthanmanufacturer(manufacturer);
+    public void countGreaterThanManufacturer(String manufacturer) {
+        CollectionManager.countGreaterThanManufacturer(manufacturer);
     }
 
     public void info() {
@@ -61,11 +61,11 @@ public class CommandReceiver {
         }
     }
 
-    public void remivwbyid(String iD) {
+    public void remiveById(String iD) {
         Integer productId;
         try {
             productId = Integer.parseInt(iD);
-            CollectionManager.removebyid(productId);
+            CollectionManager.removeById(productId);
         } catch (NumberFormatException e) {
             System.out.println("Команда не выполнена. Был введен некорректный аргумент.");
         }
@@ -86,13 +86,13 @@ public class CommandReceiver {
     }
 
 
-    public void removeallbymanufacturecost(Integer manufactureCost) {
-        CollectionManager.removeallbymanufacturecost(manufactureCost);
+    public void removeAllByManufactureCost(Integer manufactureCost) {
+        CollectionManager.removeAllByManufactureCost(manufactureCost);
     }
 
-    public void removegreater(Integer id) {
+    public void removeGreater(Integer id) {
 
-        CollectionManager.removegreater(id);
+        CollectionManager.removeGreater(id);
     }
 
     public void executeScript(String path) {
@@ -135,13 +135,13 @@ public class CommandReceiver {
         }
     }
 
-    public void removefirst() {
-        CollectionManager.removefirst();
+    public void removeFirst() {
+        CollectionManager.removeFirst();
         System.out.println("Первый элемент удален.");
     }
 
-    public void countbymanufacturer(String manufacturer) {
-        CollectionManager.countbymanufacturer(manufacturer);
+    public void countByManufacturer(String manufacturer) {
+        CollectionManager.countByManufacturer(manufacturer);
     }
 
 

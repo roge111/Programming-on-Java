@@ -17,7 +17,7 @@ public class RemoveAllByManufactureCost extends Command {
 
         }
         if (args.length > 0) {
-            commandReceiver.removeallbymanufacturecost(Integer.getInteger(args[1]));
+            commandReceiver.removeAllByManufactureCost(Integer.getInteger(args[1]));
         }
     }
 

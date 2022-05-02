@@ -15,7 +15,7 @@ public class RemoveFirst extends Command {
 
         }
 
-        commandReceiver.removefirst();
+        commandReceiver.removeFirst();
     }
 
     @Override

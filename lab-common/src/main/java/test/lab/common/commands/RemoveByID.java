@@ -11,7 +11,7 @@ public class RemoveByID extends Command {
     @Override
     protected void execute(String[] args) {
         if (args.length == 2) {
-            commandReceiver.remivwbyid(args[1]);
+            commandReceiver.remiveById(args[1]);
         } else {
             System.out.println("Некорректное количество аргументов. Для справки напишите help.");
         }

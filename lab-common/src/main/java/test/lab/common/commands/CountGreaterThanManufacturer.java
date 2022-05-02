@@ -16,7 +16,7 @@ public class CountGreaterThanManufacturer extends Command {
 
         }
 
-        commandReceiver.countgreaterthanmanufacturer(args[1]);
+        commandReceiver.countGreaterThanManufacturer(args[1]);
     }
 
     @Override

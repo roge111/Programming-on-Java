@@ -14,7 +14,7 @@ public class RemoveGreater extends Command {
 
         }
 
-        commandReceiver.removegreater(Integer.getInteger(args[1]));
+        commandReceiver.removeGreater(Integer.getInteger(args[1]));
     }
 
     @Override

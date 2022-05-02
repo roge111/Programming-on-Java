@@ -13,7 +13,7 @@ public class CountByManufacturer extends Command {
         if (args.length > 2) {
             System.out.println("Введен не нужный аргумент. Команда приведена к базовой команде count_by_manufacturer.");
         }
-        commandReceiver.countbymanufacturer(args[1]);
+        commandReceiver.countByManufacturer(args[1]);
 
     }
 

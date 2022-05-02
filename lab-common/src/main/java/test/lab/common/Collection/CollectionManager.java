@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 
 public class CollectionManager {
-    private static LinkedList<Product> linkedList;
-    private static ZonedDateTime creationDate;
+    public static LinkedList<Product> linkedList;
+    public static ZonedDateTime creationDate;
 
     public static LinkedList<Product> getLinkedList() {
         return linkedList;
@@ -54,7 +54,7 @@ public class CollectionManager {
         });
     }
 
-    public static void removebyid(Integer productId) {
+    public static void removeById(Integer productId) {
         Iterator<Product> i = linkedList.iterator();
         while (i.hasNext()) {
             Product product = i.next();
@@ -85,7 +85,7 @@ public class CollectionManager {
         }
     }
 
-    public static void countgreaterthanmanufacturer(String manufacturer) {
+    public static void countGreaterThanManufacturer(String manufacturer) {
         if (linkedList.size() > 0) {
             for (Product listProduct : linkedList) {
                 if (String.valueOf(listProduct.getManufacturer()).compareTo(manufacturer) > 0) {
@@ -102,7 +102,7 @@ public class CollectionManager {
     }
 
 
-    public static void removeallbymanufacturecost(Integer mfc) {
+    public static void removeAllByManufactureCost(Integer mfc) {
         int cnt = 0;
         try {
             for (Product linkedProduct : linkedList) {
@@ -120,7 +120,7 @@ public class CollectionManager {
 
     }
 
-    public static void countbymanufacturer(String manufacturer) {
+    public static void countByManufacturer(String manufacturer) {
         int cnt = 0;
         for (Product linkedProduct : linkedList) {
             if (String.valueOf(linkedProduct.getManufacturer()) == manufacturer) {
@@ -130,7 +130,7 @@ public class CollectionManager {
         System.out.println(cnt);
     }
 
-    public static void removegreater(Integer id) {
+    public static void removeGreater(Integer id) {
         Iterator<Product> i = linkedList.iterator();
         while (i.hasNext()) {
             Product product = i.next();
@@ -141,7 +141,7 @@ public class CollectionManager {
 
     }
 
-    public static void removefirst() {
+    public static void removeFirst() {
         Iterator i = linkedList.iterator();
         if (i.hasNext()) {
             i.next();
