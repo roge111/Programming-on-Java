@@ -30,10 +30,6 @@ public class CollectionManager {
         linkedList.add(product);
     }
 
-    public static void addXMLObject(Product product) {
-        product.setId(IDGenerator.generateID(product.getId()));
-        linkedList.add(product);
-    }
 
     public static void getInfo() {
         System.out.println("Тип коллекции – " + linkedList.getClass().getName());

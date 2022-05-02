@@ -26,7 +26,6 @@ public class Console {
         CommandInvoker commandInvoker = new CommandInvoker();
         CommandReceiver commandReceiver = new CommandReceiver(commandInvoker);
         System.out.println("Введите первую команду. Чтобы узнать все команды введите 'help'.");
-        Scanner fileName = new Scanner(System.in);
         CollectionManager collectionManager = new CollectionManager();
         CollectionManager.initList();
 
