@@ -1,7 +1,7 @@
 package test.lab.common.commands;
 
 public class ExecuteScript extends Command {
-    private static String path;
+    public static String path;
     private final CommandReceiver commandReceiver;
 
     public ExecuteScript(CommandReceiver commandReceiver) {
