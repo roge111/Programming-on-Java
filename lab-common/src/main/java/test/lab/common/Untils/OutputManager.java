@@ -27,7 +27,7 @@ public class OutputManager {
 
     private enum Massegenf {
         ON,
-        OF
+        OFF
     }
 
 

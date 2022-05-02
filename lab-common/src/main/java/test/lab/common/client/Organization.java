@@ -68,7 +68,6 @@ public class Organization implements Comparable<Organization> {
     }
 
     public void setOrganiztion(String organiztion) {
-        this.organization = organization;
     }
 
     public Organization getOrganization() {

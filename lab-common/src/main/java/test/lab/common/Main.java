@@ -11,7 +11,7 @@ public final class Main {
         Console console = new Console();
         console.startInteractiveMode();
 
-//        Product p1 = new
+
     }
 
 }
