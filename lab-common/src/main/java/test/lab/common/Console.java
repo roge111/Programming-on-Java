@@ -33,7 +33,7 @@ public class Console {
         commandInvoker.register("add", new Add(commandReceiver));
         commandInvoker.register("update", new Update(commandReceiver));
         commandInvoker.register("help", new Help(commandReceiver));
-        commandInvoker.register("save", new Save(collectionManager));
+        commandInvoker.register("save", new Save(commandReceiver));
         commandInvoker.register("show", new Show(commandReceiver));
         commandInvoker.register("remove_by_id", new RemoveByID(commandReceiver));
         commandInvoker.register("head", new Head(commandReceiver));

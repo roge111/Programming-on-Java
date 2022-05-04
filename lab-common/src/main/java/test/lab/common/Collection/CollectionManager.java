@@ -2,9 +2,8 @@ package test.lab.common.Collection;
 
 import test.lab.common.client.Product;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -149,22 +148,23 @@ public class CollectionManager {
         }
     }
 
-    public void save() {
-        try {
-            Scanner in = new Scanner(System.in);
-            String filename = in.nextLine().trim();
-            File file = new File(filename + ".xml");
-            PrintWriter writer = new PrintWriter(file);
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<java version=\"16.0.2\" class=\"test.lab.common.Collection.CollectionManager\">\n" + " <object class=\"test.lab.common.client.Product\">\n");
-            for (Product product : linkedList) {
-                writer.write("  <void property=\"manufactureCost\">\n" + "   <int>" + product.getManufactureCost() + "</int>\n" + "  </void>\n" + "  <void property=\"manufacturer\">\n" + "   <object class=\"test.lab.common.client.Organization\">\n" + "    <void property=\"name\">\n" + "     <string>" + product.getManufacturer().getName() + "</string>\n" + "    </void>\n" + "    <void property=\"postalAddress\">\n" + "     <object class=\"test.lab.common.client.Address\">\n" + "      <void property=\"street\">\n" + "       <string>" + product.getManufacturer().getPostalAddress().getStreet() + "</string>\n" + "      </void>\n" + "      </void>\n" + "     </object>\n" + "    </void>\n" + "    <void property=\"type\">\n" + "     <object class=\"java.lang.Enum\" method=\"valueOf\">\n" + "      <class>test.lab.common.client.OrganizationType</class>\n" + "      <string>" + product.getManufacturer().getType() + "</string>\n" + "     </object>\n" + "    </void>\n" + "   </object>\n" + "  </void>\n" + "  <void property=\"name\">\n" + "   <string>" + product.getName() + "</string>\n" + "  </void>\n" + "  <void property=\"partNumber\">\n" + "   <string>" + product.getPartNumber() + "</string>\n" + "  </void>\n" + "  <void property=\"price\">\n" + "   <double>" + product.getPrice() + "</double>\n" + "  </void>\n" + "  <void property=\"unitOfMeasure\">\n" + "   <object class=\"java.lang.Enum\" method=\"valueOf\">\n" + "    <class>test.lab.common.client.UnitOfMeasure</class>\n" + "    <string>" + product.getUnitOfMeasure() + "</string>\n" + "   </object>\n" + "  </void>\n");
-                writer.close();
+    public static void save(String fileName){
+        try{
+            FileOutputStream file = new FileOutputStream(new File(fileName + ".xml"));
+            XMLEncoder encoder = new XMLEncoder(file);
+            for (Product product : linkedList){
+                Product product1 = new Product(product.getName(), product.getCoordinates(), product.getPrice(), product.getPartNumber(), product.getManufactureCost(), product.getUnitOfMeasure(), product.getManufacturer());
+                encoder.writeObject(product1);
             }
-            writer.write("\" </object>\\n\" + \"</java>\"");
-            System.out.println("Коллекция сохранена в файл: " + filename + ".xml");
-        } catch (IOException e) {
-            System.out.println("Произошла ошибка");
+            encoder.close();
+            file.close();
+        } catch ( IOException e){
+            e.printStackTrace();
         }
+
+
+
+
 
     }
 

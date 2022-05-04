@@ -4,10 +4,10 @@ import test.lab.common.Collection.CollectionManager;
 
 public class Save extends Command {
 
-    public final CollectionManager collectionManager;
+    public final CommandReceiver commandReceiver;
 
-    public Save(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
+    public Save(CommandReceiver commandReceiver) {
+        this.commandReceiver = commandReceiver;
     }
 
     @Override
@@ -16,7 +16,7 @@ public class Save extends Command {
             System.out.println("Введен не ненужный аргумент. Команда приведена к базовой команде save");
 
         }
-        collectionManager.save();
+        commandReceiver.save();
 
     }
 

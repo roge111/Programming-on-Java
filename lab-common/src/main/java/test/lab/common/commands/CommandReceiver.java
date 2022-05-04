@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 
 public class CommandReceiver {
@@ -142,6 +143,12 @@ public class CommandReceiver {
 
     public void countByManufacturer(String manufacturer) {
         CollectionManager.countByManufacturer(manufacturer);
+    }
+
+    public  void save(){
+        Scanner in = new Scanner(System.in);
+        String fileName = in.nextLine().trim();
+        CollectionManager.save(fileName);
     }
 
 

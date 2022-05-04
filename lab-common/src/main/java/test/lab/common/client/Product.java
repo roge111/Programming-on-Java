@@ -33,6 +33,7 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
+
     public Integer getId() {
         return id;
     }
