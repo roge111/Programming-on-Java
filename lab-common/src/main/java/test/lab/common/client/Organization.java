@@ -1,9 +1,8 @@
 package test.lab.common.client;
 
-import test.lab.common.Collection.IDGenerator;
-
 
 public class Organization implements Comparable<Organization> {
+    private static Integer countId = 1;
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private String fullName; //Строка не может быть пустой, Длина строки не должна быть больше 1435, Поле может быть null
@@ -15,9 +14,8 @@ public class Organization implements Comparable<Organization> {
 
     }
 
-
     public Organization(String name, String fullName, OrganizationType type, Address postalAddress) {
-        this.id = IDGenerator.gernerateID();
+        this.id = countId++;
         this.name = name;
         this.fullName = fullName;
         this.type = type;
@@ -32,6 +30,10 @@ public class Organization implements Comparable<Organization> {
 
     public String getName() {
         return name;
+    }
+
+    public static void setCountId(Integer countId) {
+        Organization.countId = countId;
     }
 
     public void setName(String name) {

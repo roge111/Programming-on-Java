@@ -1,12 +1,14 @@
 package test.lab.common.client;
 
-import test.lab.common.Collection.IDGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Comparator;
 
-
-public class Product {
+public class Product implements Comparable<Product> {
+    public static final int INPUT_FIELD_COUNT = 15;
+    private static Integer countId = 1;
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -21,11 +23,12 @@ public class Product {
 
     }
 
+
     public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
-        this.id = IDGenerator.gernerateID();
+        this.id = countId++;
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = creationDate;
+        this.creationDate = new Date();
         this.price = price;
         this.partNumber = partNumber;
         this.manufactureCost = manufacturerCost;
@@ -38,8 +41,12 @@ public class Product {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public static void setCountId(Integer countId) {
+        Product.countId = countId;
     }
 
     public String getName() {
@@ -102,9 +109,18 @@ public class Product {
         return manufacturer;
     }
 
-
     public void setManufacturer(Organization manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public void updateProduct(Product product) {
+        this.name = product.name;
+        this.coordinates = product.coordinates;
+        this.partNumber = product.partNumber;
+        this.manufactureCost = product.manufactureCost;
+        this.manufacturer = product.manufacturer;
+        this.price = product.price;
+        this.unitOfMeasure = product.unitOfMeasure;
     }
 
     @Override
@@ -120,12 +136,33 @@ public class Product {
     }
 
     @Override
+    public String toString() {
+        return "ID: " + id
+                + "\nКоординаты (x, y): " + coordinates.getX() + ", " + coordinates.getY()
+                + "\nНаименование: " + name
+                + "\nДата создания: " + creationDate
+                + "\nЦена: " + price
+                + "\nНомер: " + partNumber
+                + "\nЦена изготовления: " + manufactureCost
+                + "\nЕдиница измерения: " + unitOfMeasure.toString()
+                + "\nID производства: " + manufacturer.getId()
+                + "\nНазвание производства: " + manufacturer.getName()
+                + "\nТип производства: " + manufacturer.getType()
+                + "\nАдрес производства: " + manufacturer.getPostalAddress().getTown()
+                + " улица " + manufacturer.getPostalAddress().getStreet();
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(id, name, coordinates, creationDate, manufacturer);
     }
 
-    public int compareTo(Product productId) {
-        return (this.id - productId.getId());
+    public int compareTo(@NotNull Product o) {
+        return Comparator.comparing(Product::getName)
+                .thenComparing(Product::getPrice)
+                .thenComparing(Product::getManufactureCost)
+                .thenComparing(Product::getUnitOfMeasure)
+                .compare(this, o);
     }
 }
 

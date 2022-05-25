@@ -70,7 +70,6 @@
     <!-- </module> -->
 
     <module name="TreeWalker">
-
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
         <module name="ConstantName"/>
@@ -107,7 +106,7 @@
             <property name="max" value="15"/>
         </module>
         <module name="MethodLength">
-            <property name="max" value="40"/>
+            <property name="max" value="70"/>
         </module>
         <module name="ParameterNumber"/>
 
@@ -162,7 +161,7 @@
         </module>
         <module name="NestedTryDepth"/>
         <module name="NestedIfDepth">
-            <property name="max" value="2"/>
+            <property name="max" value="3"/>
         </module>
         <module name="OneStatementPerLine"/>
         <module name="ParameterAssignment"/>
@@ -177,7 +176,7 @@
         </module>
 
         <module name="CyclomaticComplexity">
-            <property name="max" value="15"/>
+            <property name="max" value="20"/>
         </module>
 
         <!-- Checks for class design                         -->
