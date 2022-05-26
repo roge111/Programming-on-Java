@@ -25,10 +25,24 @@ import java.util.Scanner;
 
 public final class Console {
     public static final Scanner SCANNER = new Scanner(System.in);
-    public static final int PARAMS3 = 3;
-    public static final int PARAMS4 = 4;
+    public static final int NAME_INDEX = 0;
+    public static final int X_INDEX = 1;
+    public static final int Y_INDEX = 2;
+    public static final int PRICE_INDEX = 3;
+    public static final int PURT_NUMBER_INDEX = 4;
+    public static final int MANNUFACTURE_COST_INDEX = 5;
+    public static final int UNIT_OF_MEASURE_INDEX = 6;
+    public static final int NAME_ORGANIZATION_INDEX = 7;
+    public static final int FULL_NAME_INDEX = 8;
+    public static final int TYPE_INDEX = 9;
+    public static final int STREET_INDEX = 10;
+    public static final int X_LOCATION_INDEX = 11;
+    public static final int Y_LOCATION_INDEX = 12;
+    public static final int Z_LOCATION_INDEX = 13;
+    public static final int NAME_LOCATION_INDEX = 14;
 
     private Console() {
+
     }
 
     public static void main(String[] args) {
@@ -38,8 +52,12 @@ public final class Console {
 
     public static void startInteractiveMode() {
         System.out.print(MsgConsts.FIRST_MSG);
-        ProductsManager.initList();
-
+        try {
+            ProductsManager.initList();
+        } catch (IllegalArgumentException ignored) {
+            System.out.println(MsgConsts.INIT_ERROR_MSG);
+            ProductsManager.clear();
+        }
         while (true) {
             List<String> lines = Arrays.asList(SCANNER.nextLine().trim().split(" "));
 
@@ -122,7 +140,6 @@ public final class Console {
                 break;
             default:
                 System.out.println(MsgConsts.UNKNOWN_COMMAND_MSG);
-                break;
         }
     }
 
@@ -279,6 +296,7 @@ public final class Console {
                     break;
                 }
                 try {
+
                     Command command = Command.valueOf(lines.get(0).toUpperCase());
                     int argsCount = lines.size() - 1;
                     if (!command.isValidArgsCount(argsCount)) {
@@ -319,6 +337,7 @@ public final class Console {
                     break;
                 }
                 lines = Arrays.asList(strings.split(" "));
+
             }
             if (executeSuccessful) {
                 System.out.println(MsgConsts.SUCCESSFUL_MSG);
@@ -326,6 +345,7 @@ public final class Console {
                 ProductsManager.load(ProductsManager.BACKUP_NAME);
                 System.out.println(MsgConsts.ERROR_EXECUTE_SCRIPT_MSG);
             }
+
         } catch (FileNotFoundException e) {
             System.out.println(MsgConsts.FILE_NOT_FOUND_MSG);
         } catch (IOException e) {
@@ -333,25 +353,24 @@ public final class Console {
         }
     }
 
-    //CHECKSTYLE IGNORE <MagicNumber> 1
-    public static Product createProductFromList(List<String> parameters) {
 
+    public static Product createProductFromList(List<String> parameters) {
         try {
-            String name = ReadProps.checkAndReturnValue(parameters.get(0), String.class, false);
-            Float x = ReadProps.checkAndReturnValue(parameters.get(1), float.class, false);
-            Long y = ReadProps.checkAndReturnValue(parameters.get(2), long.class, false);
-            Double price = ReadProps.checkAndReturnValue(parameters.get(PARAMS3), Double.class, false);
-            String partNumber = ReadProps.checkAndReturnValue(parameters.get(PARAMS4), String.class, false);
-            Integer manufactureCost = ReadProps.checkAndReturnValue(parameters.get(0), Integer.class, false);
-            UnitOfMeasure unitOfMeasure = ReadProps.checkAndReturnValue(parameters.get(0), UnitOfMeasure.class, false);
-            String nameOrganization = ReadProps.checkAndReturnValue(parameters.get(0), String.class, false);
-            String fullName = ReadProps.checkAndReturnValue(parameters.get(0), String.class, false);
-            OrganizationType type = ReadProps.checkAndReturnValue(parameters.get(0), OrganizationType.class, false);
-            String street = ReadProps.checkAndReturnValue(parameters.get(0), String.class, false);
-            Integer xLocation = ReadProps.checkAndReturnValue(parameters.get(0), Integer.class, false);
-            Integer yLocation = ReadProps.checkAndReturnValue(parameters.get(0), Integer.class, false);
-            Float zLocation = ReadProps.checkAndReturnValue(parameters.get(0), Float.class, false);
-            String nameLocation = ReadProps.checkAndReturnValue(parameters.get(0), String.class, false);
+            String name = ReadProps.checkAndReturnValue(parameters.get(NAME_INDEX), String.class, false);
+            Float x = ReadProps.checkAndReturnValue(parameters.get(X_INDEX), float.class, false);
+            Long y = ReadProps.checkAndReturnValue(parameters.get(Y_INDEX), long.class, false);
+            Double price = ReadProps.checkAndReturnValue(parameters.get(PRICE_INDEX), Double.class, false);
+            String partNumber = ReadProps.checkAndReturnValue(parameters.get(PURT_NUMBER_INDEX), String.class, false);
+            Integer manufactureCost = ReadProps.checkAndReturnValue(parameters.get(MANNUFACTURE_COST_INDEX), Integer.class, false);
+            UnitOfMeasure unitOfMeasure = ReadProps.checkAndReturnValue(parameters.get(UNIT_OF_MEASURE_INDEX), UnitOfMeasure.class, false);
+            String nameOrganization = ReadProps.checkAndReturnValue(parameters.get(NAME_ORGANIZATION_INDEX), String.class, false);
+            String fullName = ReadProps.checkAndReturnValue(parameters.get(FULL_NAME_INDEX), String.class, false);
+            OrganizationType type = ReadProps.checkAndReturnValue(parameters.get(TYPE_INDEX), OrganizationType.class, false);
+            String street = ReadProps.checkAndReturnValue(parameters.get(STREET_INDEX), String.class, false);
+            Integer xLocation = ReadProps.checkAndReturnValue(parameters.get(X_LOCATION_INDEX), Integer.class, false);
+            Integer yLocation = ReadProps.checkAndReturnValue(parameters.get(Y_LOCATION_INDEX), Integer.class, false);
+            Float zLocation = ReadProps.checkAndReturnValue(parameters.get(Z_LOCATION_INDEX), Float.class, false);
+            String nameLocation = ReadProps.checkAndReturnValue(parameters.get(NAME_LOCATION_INDEX), String.class, false);
 
             return new Product(name, new Coordinates(x, y), price, partNumber, manufactureCost, unitOfMeasure,
                     new Organization(nameOrganization, fullName, type,

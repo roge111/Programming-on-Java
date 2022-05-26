@@ -142,26 +142,27 @@ public final class ReadProps {
 
     @SuppressWarnings("unchecked")
     public static <T> T checkAndReturnValue(String stringValue, Class<T> clazz, boolean isCanBeNull) {
+        T value = null;
         if ((!isCanBeNull && stringValue == null) || stringValue.isEmpty()) {
             return null;
         }
-        T type = null;
         if (clazz.isAssignableFrom(Integer.class)) {
-            type = (T) Integer.valueOf(stringValue);
+            value = (T) Integer.valueOf(stringValue);
         } else if (clazz.isAssignableFrom(float.class)) {
-            type = (T) Float.valueOf(stringValue);
+            value = (T) Float.valueOf(stringValue);
         } else if (clazz.isAssignableFrom(long.class)) {
-            type = (T) Long.valueOf(stringValue);
+            value = (T) Long.valueOf(stringValue);
         } else if (clazz.isAssignableFrom(Double.class)) {
-            type = (T) Double.valueOf(stringValue);
+            value = (T) Double.valueOf(stringValue);
         } else if (clazz.isAssignableFrom(OrganizationType.class)) {
-            type = (T) OrganizationType.valueOf(stringValue);
+            value = (T) OrganizationType.valueOf(stringValue);
         } else if (clazz.isAssignableFrom(UnitOfMeasure.class)) {
-            type = (T) UnitOfMeasure.valueOf(stringValue);
+            value = (T) UnitOfMeasure.valueOf(stringValue);
         } else {
-            type = (T) stringValue;
+            value = (T) stringValue;
         }
-        return type;
+        return value;
+
     }
 }
 

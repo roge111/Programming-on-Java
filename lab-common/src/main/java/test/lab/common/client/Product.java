@@ -19,6 +19,7 @@ public class Product implements Comparable<Product> {
     private UnitOfMeasure unitOfMeasure; //Поле не может быть null
     private Organization manufacturer; //Поле не может быть null
 
+
     public Product() {
 
     }

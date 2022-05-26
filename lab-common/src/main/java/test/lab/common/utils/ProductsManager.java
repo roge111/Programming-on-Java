@@ -21,8 +21,8 @@ public final class ProductsManager {
     private static ZonedDateTime creationDate;
 
     private ProductsManager() {
-
     }
+
 
     public static boolean checkExist(Integer id) {
         return products.stream().anyMatch(p -> p.getId().equals(id));
@@ -46,10 +46,16 @@ public final class ProductsManager {
     }
 
     private static Integer getMaxProductId() {
+        if (products.getLast().getId() == null) {
+            throw new IllegalArgumentException();
+        }
         return products.getLast().getId();
     }
 
     private static Integer getMaxOrganizationId() {
+        if (products.getLast().getManufacturer().getId() == null) {
+            throw new IllegalArgumentException();
+        }
         return products.getLast().getManufacturer().getId();
     }
 

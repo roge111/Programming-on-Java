@@ -20,12 +20,15 @@ public class Organization implements Comparable<Organization> {
         this.fullName = fullName;
         this.type = type;
         this.postalAddress = postalAddress;
-
     }
 
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
