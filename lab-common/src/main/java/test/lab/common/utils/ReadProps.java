@@ -142,7 +142,9 @@ public final class ReadProps {
 
     @SuppressWarnings("unchecked")
     public static <T> T checkAndReturnValue(String stringValue, Class<T> clazz, boolean isCanBeNull) {
-        T value = null;
+
+
+        T value;
         if ((!isCanBeNull && stringValue == null) || stringValue.isEmpty()) {
             return null;
         }
@@ -162,6 +164,7 @@ public final class ReadProps {
             value = (T) stringValue;
         }
         return value;
+
 
     }
 }
