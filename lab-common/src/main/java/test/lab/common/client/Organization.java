@@ -1,21 +1,21 @@
 package test.lab.common.client;
 
 
+import test.lab.common.utils.ProductsManager;
+
 public class Organization implements Comparable<Organization> {
-    private static Integer countId = 1;
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private String fullName; //Строка не может быть пустой, Длина строки не должна быть больше 1435, Поле может быть null
     private OrganizationType type; //Поле не может быть null
     private Address postalAddress; //Поле не может быть null
-    private Organization organization;
 
     public Organization() {
 
     }
 
     public Organization(String name, String fullName, OrganizationType type, Address postalAddress) {
-        this.id = countId++;
+        this.id = ProductsManager.getNewOrganizationId();
         this.name = name;
         this.fullName = fullName;
         this.type = type;
@@ -27,6 +27,9 @@ public class Organization implements Comparable<Organization> {
         return id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(Integer id) {
         this.id = id;
     }
@@ -35,10 +38,9 @@ public class Organization implements Comparable<Organization> {
         return name;
     }
 
-    public static void setCountId(Integer countId) {
-        Organization.countId = countId;
-    }
-
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -47,6 +49,9 @@ public class Organization implements Comparable<Organization> {
         return fullName;
     }
 
+    /**
+     * @param fullName
+     */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -55,6 +60,9 @@ public class Organization implements Comparable<Organization> {
         return type;
     }
 
+    /**
+     * @param type
+     */
     public void setType(OrganizationType type) {
         this.type = type;
     }
@@ -63,19 +71,35 @@ public class Organization implements Comparable<Organization> {
         return postalAddress;
     }
 
+    /**
+     * @param postalAddress
+     */
     public void setPostalAddress(Address postalAddress) {
         this.postalAddress = postalAddress;
     }
 
+    /**
+     * Возвращает 0 если объекты равны, иначе -1 - объект первый меньше второго, иначе 1
+     *
+     * @param o объект, который будем сравнивать
+     * @return
+     */
+    public int compareTo(Organization o) {
+        int result = name.compareTo(o.name);
+        if (result != 0) {
+            return result;
+        }
+        result = fullName.compareTo(o.fullName);
+        if (result != 0) {
+            return result;
+        }
+        return postalAddress.compareTo(o.postalAddress);
 
-    public int compareTo(Organization compared) {
-        return (this.id - compared.getId());
-    }
 
-    public void setOrganiztion(String organiztion) {
-    }
-
-    public Organization getOrganization() {
-        return organization;
+//        return Comparator.comparing(Organization::getName)
+//                .thenComparing(Organization::getFullName)
+//                .thenComparing(Organization::getPostalAddress)
+//                .thenComparing(Organization::getId)
+//                .compare(this, o);
     }
 }

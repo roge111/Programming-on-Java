@@ -2,7 +2,7 @@ package test.lab.common.client;
 
 import java.util.Objects;
 
-public class Address {
+public class Address implements Comparable<Address> {
     private String street;
     private test.lab.common.client.Location town;
 
@@ -46,5 +46,17 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(street, town);
+    }
+
+    @Override
+    public int compareTo(Address o) {
+        int result = street.compareTo(o.street);
+        if (result != 0) {
+            return result;
+        }
+        return town.compareTo(o.town);
+//        return Comparator.comparing(Address::getStreet)
+//                .thenComparing(Address::getTown)
+//                .compare(this, o);
     }
 }

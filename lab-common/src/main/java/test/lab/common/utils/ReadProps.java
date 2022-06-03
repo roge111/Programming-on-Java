@@ -124,6 +124,13 @@ public final class ReadProps {
         }
     }
 
+    /**
+     *
+     * @param clazz
+     * @param isCanBeNull
+     * @param <T>
+     * @return
+     */
     public static <T> T readValue(Class<T> clazz, boolean isCanBeNull) {
         while (true) {
             try {
@@ -140,6 +147,14 @@ public final class ReadProps {
         }
     }
 
+    /**
+     *
+     * @param stringValue
+     * @param clazz
+     * @param isCanBeNull
+     * @param <T>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <T> T checkAndReturnValue(String stringValue, Class<T> clazz, boolean isCanBeNull) {
 

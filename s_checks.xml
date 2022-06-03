@@ -107,7 +107,7 @@
             <property name="max" value="15"/>
         </module>
         <module name="MethodLength">
-            <property name="max" value="100"/>
+            <property name="max" value="40"/>
         </module>
         <module name="ParameterNumber"/>
 
@@ -162,7 +162,7 @@
         </module>
         <module name="NestedTryDepth"/>
         <module name="NestedIfDepth">
-            <property name="max" value="4"/>
+            <property name="max" value="2"/>
         </module>
         <module name="OneStatementPerLine"/>
         <module name="ParameterAssignment"/>
@@ -177,7 +177,7 @@
         </module>
 
         <module name="CyclomaticComplexity">
-            <property name="max" value="20"/>
+            <property name="max" value="15"/>
         </module>
 
         <!-- Checks for class design                         -->

@@ -1,22 +1,25 @@
 package test.lab.common.utils;
 
-import test.lab.common.client.Product;
 import test.lab.common.client.Organization;
+import test.lab.common.client.Product;
 import test.lab.common.client.ProductComparableProperty;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.Objects;
 
 public final class ProductsManager {
-    public static final String FILE_NAME = "out.xml";
-    public static final String BACKUP_NAME = "backup.xml";
+    private static final String FILE_PATH = "filepath.txt";
     private static LinkedList<Product> products;
     private static ZonedDateTime creationDate;
 
@@ -32,37 +35,57 @@ public final class ProductsManager {
     public static void initList() {
         if (products == null) {
             products = new LinkedList<>();
-            load(FILE_NAME);
-            if (products.size() > 0) {
-                Product.setCountId(getMaxProductId());
-                Organization.setCountId(getMaxOrganizationId());
-            }
+            load();
             creationDate = ZonedDateTime.now();
         }
     }
 
+    /**
+     * @param envVar
+     * @return
+     */
+    public static boolean checkEnvVariable(String envVar) {
+        if (System.getenv().containsKey(envVar)) {
+            String filePath = System.getenv(envVar);
+            File file = new File(filePath);
+            return file.exists() && file.isFile() && filePath.toLowerCase().endsWith(".xml");
+        }
+        return false;
+    }
+
+    /**
+     * @param product
+     */
     public static void add(Product product) {
         products.add(product);
     }
 
-    private static Integer getMaxProductId() {
-        if (products.getLast().getId() == null) {
-            throw new IllegalArgumentException();
+    public static Integer getNewProductId() {
+        if (products.size() > 0) {
+            return products.getLast().getId() + 1;
         }
-        return products.getLast().getId();
+        return 0;
     }
 
-    private static Integer getMaxOrganizationId() {
-        if (products.getLast().getManufacturer().getId() == null) {
-            throw new IllegalArgumentException();
+    public static Integer getNewOrganizationId() {
+        if (products.size() > 0) {
+            return products.getLast().getManufacturer().getId() + 1;
         }
-        return products.getLast().getManufacturer().getId();
+        return 0;
     }
 
+    /**
+     * @param product
+     * @param id
+     */
     public static void update(Product product, Integer id) {
         products.stream().filter(p -> p.getId().equals(id)).findAny().get().updateProduct(product);
     }
 
+    /**
+     * @param productId
+     * @return
+     */
     public static boolean removeById(Integer productId) {
         return products.removeIf(p -> Objects.equals(p.getId(), productId));
     }
@@ -75,12 +98,19 @@ public final class ProductsManager {
         return products.size() > 0 ? products.get(0) : null;
     }
 
+    /**
+     * @param manufacturer
+     * @return
+     */
     public static int countGreaterThanManufacturer(String manufacturer) {
         return (int) products.stream()
                 .filter(p -> p.getManufacturer().toString().compareTo(manufacturer) > 0).count();
     }
 
-
+    /**
+     * @param mfc
+     * @return
+     */
     public static boolean removeAllByManufactureCost(Integer mfc) {
         return products.removeIf(p -> p.getManufactureCost().equals(mfc));
     }
@@ -90,54 +120,80 @@ public final class ProductsManager {
                 .filter(p -> p.getManufacturer().getName().equals(manufacturer)).count();
     }
 
-    public static boolean removeGreater(ProductComparableProperty pcp, String value) {
+    /**
+     * @param pcp
+     * @param value
+     * @return
+     */
+    public static boolean removeGreater(ProductComparableProperty pcp, Object value) {
         boolean isSuccessful = false;
         try {
             switch (pcp) {
                 case PRICE:
-                    double price = Double.parseDouble(value);
+                    double price = Double.parseDouble(value.toString());
                     isSuccessful = products.removeIf(p -> p.getPrice() > price);
                     break;
                 case ID:
-                    Integer id = Integer.parseInt(value);
+                    Integer id = Integer.parseInt(value.toString());
                     isSuccessful = products.removeIf(p -> p.getId() > id);
                     break;
                 case MANUFACTURE_COST:
-                    Integer cost = Integer.parseInt(value);
+                    Integer cost = Integer.parseInt(value.toString());
                     isSuccessful = products.removeIf(p -> p.getManufactureCost() > cost);
+                    break;
+                case ORGANIZATION:
+                    Organization organization = (Organization) value;
+                    isSuccessful = products.removeIf(p -> p.getManufacturer().compareTo(organization) > 0);
                     break;
                 default:
                     break;
             }
-        } catch (NumberFormatException ignored) {
-            ignored.printStackTrace();
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
         }
         return isSuccessful;
     }
 
-    public static boolean removeFirst() {
+    public static void removeFirst() {
         if (products.size() > 0) {
             products.removeFirst();
-            return true;
         }
-        return false;
     }
 
-    public static void save(String fileName) {
-        try (FileOutputStream file = new FileOutputStream(fileName);
+    /**
+     * @param envVar
+     */
+    public static void save(String envVar) {
+        String filePath = System.getenv(envVar);
+        try (FileOutputStream file = new FileOutputStream(filePath);
              XMLEncoder encoder = new XMLEncoder(file)) {
             encoder.writeObject(products);
+            saveFilePath(filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * @param filePath
+     * @throws FileNotFoundException
+     */
+    private static void saveFilePath(String filePath) throws FileNotFoundException {
+        PrintWriter printWriter = new PrintWriter(FILE_PATH);
+        printWriter.println(filePath);
+        printWriter.close();
+    }
+
     @SuppressWarnings("unchecked")
-    public static void load(String fileName) {
+    public static void load() {
         try {
+            String fileName = getFilePath();
+            if (fileName == null) {
+                return;
+            }
             File file = new File(fileName);
             if (file.exists() && file.isFile()) {
-                try (FileInputStream fileInputStream = new FileInputStream(FILE_NAME);
+                try (FileInputStream fileInputStream = new FileInputStream(fileName);
                      XMLDecoder decoder = new XMLDecoder(fileInputStream)) {
                     products = (LinkedList<Product>) decoder.readObject();
                 }
@@ -145,6 +201,14 @@ public final class ProductsManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getFilePath() throws IOException {
+        File file = new File(FILE_PATH);
+        if (file.exists() && file.isFile()) {
+            return new BufferedReader(new InputStreamReader(new FileInputStream(FILE_PATH))).readLine();
+        }
+        return null;
     }
 
     public static ZonedDateTime getCreationDate() {

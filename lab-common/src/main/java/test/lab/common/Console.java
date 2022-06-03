@@ -18,37 +18,60 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 
 public final class Console {
     public static final Scanner SCANNER = new Scanner(System.in);
-    public static final int NAME_INDEX = 0;
-    public static final int X_INDEX = 1;
-    public static final int Y_INDEX = 2;
-    public static final int PRICE_INDEX = 3;
-    public static final int PURT_NUMBER_INDEX = 4;
-    public static final int MANNUFACTURE_COST_INDEX = 5;
-    public static final int UNIT_OF_MEASURE_INDEX = 6;
-    public static final int NAME_ORGANIZATION_INDEX = 7;
-    public static final int FULL_NAME_INDEX = 8;
-    public static final int TYPE_INDEX = 9;
-    public static final int STREET_INDEX = 10;
-    public static final int X_LOCATION_INDEX = 11;
-    public static final int Y_LOCATION_INDEX = 12;
-    public static final int Z_LOCATION_INDEX = 13;
-    public static final int NAME_LOCATION_INDEX = 14;
+    private static final List<String> ARGS = new LinkedList<>();
+    private static final Map<Command, Runnable> COMMANDS = new HashMap<>();
+
+    static {
+        COMMANDS.put(Command.ADD, Console::addProduct);
+        COMMANDS.put(Command.UPDATE, () -> update(ARGS.get(0)));
+        COMMANDS.put(Command.HELP, Console::help);
+        COMMANDS.put(Command.INFO, Console::info);
+        COMMANDS.put(Command.SAVE, () -> save(ARGS.get(0)));
+        COMMANDS.put(Command.REMOVE_BY_ID, () -> removeById(ARGS.get(0)));
+        COMMANDS.put(Command.SHOW, Console::show);
+        COMMANDS.put(Command.CLEAR, Console::clear);
+        COMMANDS.put(Command.EXECUTE_SCRIPT, () -> executeScript(ARGS.get(0)));
+        COMMANDS.put(Command.HEAD, Console::head);
+        COMMANDS.put(Command.REMOVE_FIRST, Console::removeFirst);
+        COMMANDS.put(Command.REMOVE_GREATER, Console::removeGreater);
+        COMMANDS.put(Command.REMOVE_ALL_BY_MANUFACTURE_COST, () -> removeAllByManufactureCost(ARGS.get(0)));
+        COMMANDS.put(Command.COUNT_BY_MANUFACTURER, () -> countByManufacturer(ARGS.get(0)));
+        COMMANDS.put(Command.COUNT_GREATER_THAN_MANUFACTURER, () -> countGreaterThanManufacturer(ARGS.get(0)));
+        COMMANDS.put(Command.EXIT, Console::exit);
+    }
+
+    private static final int NAME_INDEX = 0;
+    private static final int X_INDEX = 1;
+    private static final int Y_INDEX = 2;
+    private static final int PRICE_INDEX = 3;
+    private static final int PART_NUMBER_INDEX = 4;
+    private static final int MANUFACTURE_COST_INDEX = 5;
+    private static final int UNIT_OF_MEASURE_INDEX = 6;
+    private static final int NAME_ORGANIZATION_INDEX = 7;
+    private static final int FULL_NAME_INDEX = 8;
+    private static final int TYPE_INDEX = 9;
+    private static final int STREET_INDEX = 10;
+    private static final int X_LOCATION_INDEX = 11;
+    private static final int Y_LOCATION_INDEX = 12;
+    private static final int Z_LOCATION_INDEX = 13;
+    private static final int NAME_LOCATION_INDEX = 14;
 
     private Console() {
-
     }
 
     public static void main(String[] args) {
         startInteractiveMode();
     }
-
 
     public static void startInteractiveMode() {
         System.out.print(MsgConsts.FIRST_MSG);
@@ -72,7 +95,9 @@ public final class Console {
                     System.out.println(MsgConsts.ARGS_COUNT_MSG);
                     continue;
                 }
-                doCommand(command, lines.subList(1, lines.size()));
+                ARGS.clear();
+                ARGS.addAll(lines.subList(1, lines.size()));
+                doCommand(command);
                 System.out.print(MsgConsts.COMMAND_INPUT);
             } catch (IllegalArgumentException e) {
                 System.out.println(MsgConsts.UNKNOWN_COMMAND_MSG);
@@ -85,62 +110,9 @@ public final class Console {
      * Выполняет команду из консоли
      *
      * @param command команда, которую нужно выполнить
-     * @param args    необходимые аргументы
      */
-    private static void doCommand(Command command, List<String> args) {
-        switch (command) {
-            case ADD:
-                ProductsManager.add(addProduct());
-                System.out.println(MsgConsts.ELEMENT_ADD_MSG);
-                break;
-            case REMOVE_BY_ID:
-                removeById(args.get(0));
-                break;
-            case UPDATE:
-                update(args.get(0));
-                break;
-            case HELP:
-                help();
-                break;
-            case SAVE:
-                save();
-                break;
-            case INFO:
-                info();
-                break;
-            case SHOW:
-                show();
-                break;
-            case CLEAR:
-                clear();
-                break;
-            case EXECUTE_SCRIPT:
-                executeScript(args.get(0));
-                break;
-            case EXIT:
-                exit();
-                break;
-            case REMOVE_FIRST:
-                removeFirst();
-                break;
-            case HEAD:
-                head();
-                break;
-            case REMOVE_GREATER:
-                removeGreater(args);
-                break;
-            case REMOVE_ALL_BY_MANUFACTURE_COST:
-                removeAllByManufactureCost(args.get(0));
-                break;
-            case COUNT_BY_MANUFACTURER:
-                countByManufacturer(args.get(0));
-                break;
-            case COUNT_GREATER_THAN_MANUFACTURER:
-                countGreaterThanManufacturer(args.get(0));
-                break;
-            default:
-                System.out.println(MsgConsts.UNKNOWN_COMMAND_MSG);
-        }
+    private static void doCommand(Command command) {
+        COMMANDS.get(command).run();
     }
 
     /**
@@ -152,10 +124,16 @@ public final class Console {
         System.out.println(MsgConsts.COUNT_INFO_MSG + ProductsManager.countGreaterThanManufacturer(manufacturer));
     }
 
+    /**
+     * @param manufacturer
+     */
     private static void countByManufacturer(String manufacturer) {
         System.out.println(MsgConsts.COUNT_INFO_MSG + ProductsManager.countByManufacturer(manufacturer));
     }
 
+    /**
+     * @param costString
+     */
     private static void removeAllByManufactureCost(String costString) {
         try {
             Integer cost = Integer.parseInt(costString);
@@ -169,10 +147,29 @@ public final class Console {
         }
     }
 
-    private static void removeGreater(List<String> args) {
+    private static void removeGreater() {
         try {
-            ProductComparableProperty pcp = ProductComparableProperty.valueOf(args.get(0));
-            String value = args.get(1);
+            ProductComparableProperty pcp = ProductComparableProperty.valueOf(Console.ARGS.get(0));
+            Object value;
+            switch (pcp) {
+                case ID:
+                    System.out.println(MsgConsts.GET_ID_MSG);
+                    value = SCANNER.nextInt();
+                    break;
+                case PRICE:
+                    System.out.println(MsgConsts.Product.PRICE);
+                    value = SCANNER.nextDouble();
+                    break;
+                case MANUFACTURE_COST:
+                    System.out.println(MsgConsts.Product.COST);
+                    value = SCANNER.nextDouble();
+                    break;
+                case ORGANIZATION:
+                    value = createOrganization();
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
             if (ProductsManager.removeGreater(pcp, value)) {
                 System.out.println(MsgConsts.SUCCESSFUL_MSG);
             } else {
@@ -185,7 +182,7 @@ public final class Console {
 
     private static void head() {
         if (ProductsManager.getProducts().size() > 0) {
-            System.out.println(ProductsManager.head().toString());
+            System.out.println(Objects.requireNonNull(ProductsManager.head()));
         } else {
             System.out.println(MsgConsts.ELEMENT_NOT_FOUND_MSG);
         }
@@ -196,8 +193,13 @@ public final class Console {
         System.out.println(MsgConsts.REMOVE_FIRST_MSG);
     }
 
+    private static void addProduct() {
+        ProductsManager.add(createProduct());
+        System.out.println(MsgConsts.ELEMENT_ADD_MSG);
+    }
 
-    private static Product addProduct() {
+
+    private static Product createProduct() {
         String name = ReadProps.readProductName();
         float x = ReadProps.readX();
         long y = ReadProps.readY();
@@ -205,7 +207,8 @@ public final class Console {
         String partNumber = ReadProps.readProductPartNumber();
         Integer manufactureCost = ReadProps.readManufactureCost();
         UnitOfMeasure unitOfMeasure = ReadProps.readUnitOfMeasure();
-        return new Product(name, new Coordinates(x, y), price, partNumber, manufactureCost, unitOfMeasure, createOrganization());
+        return new Product(name,
+                new Coordinates(x, y), price, partNumber, manufactureCost, unitOfMeasure, createOrganization());
     }
 
     private static Organization createOrganization() {
@@ -228,6 +231,11 @@ public final class Console {
         return new Location(x, y, z, name);
     }
 
+    /**
+     * Удаляет элемент по его id
+     *
+     * @param idString введенный id
+     */
     public static void removeById(String idString) {
         try {
             Integer productId = Integer.parseInt(idString);
@@ -241,11 +249,16 @@ public final class Console {
         }
     }
 
+    /**
+     * Обновляет значение элемента коллекции, id которого равен заданному
+     *
+     * @param idString введенный id
+     */
     public static void update(String idString) {
         try {
             Integer productId = Integer.parseInt(idString);
             if (ProductsManager.checkExist(productId)) {
-                ProductsManager.update(addProduct(), productId);
+                ProductsManager.update(createProduct(), productId);
                 System.out.println(MsgConsts.SUCCESSFUL_MSG);
             } else {
                 System.out.println(MsgConsts.ERROR_NOT_ID_UPDATE_MSG);
@@ -265,9 +278,18 @@ public final class Console {
         System.out.println(MsgConsts.HELP_MSG);
     }
 
-    public static void save() {
-        ProductsManager.save(ProductsManager.FILE_NAME);
-        System.out.println(MsgConsts.SUCCESSFUL_MSG);
+    /**
+     * Сохраняет коллекцию в файл из переменной окружения
+     *
+     * @param envVar имя переменной окружения
+     */
+    public static void save(String envVar) {
+        if (ProductsManager.checkEnvVariable(envVar)) {
+            ProductsManager.save(envVar);
+            System.out.println(MsgConsts.SUCCESSFUL_MSG);
+        } else {
+            System.out.println(MsgConsts.ERROR_ENV_PATH_MSG);
+        }
     }
 
     public static void show() {
@@ -281,6 +303,11 @@ public final class Console {
         System.out.println(MsgConsts.CLEAR_MSG);
     }
 
+    /**
+     * Выполняет команды из файла
+     *
+     * @param path путь к файлу
+     */
     public static void executeScript(String path) {
         boolean executeSuccessful = true;
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -289,44 +316,19 @@ public final class Console {
                 return;
             }
             List<String> lines = Arrays.asList(strings.split(" "));
-            ProductsManager.save(ProductsManager.BACKUP_NAME);
             while (lines.size() > 0) {
-                if (lines.get(0).isEmpty() || lines.get(0) == null) {
-                    executeSuccessful = false;
-                    break;
-                }
                 try {
-
-                    Command command = Command.valueOf(lines.get(0).toUpperCase());
-                    int argsCount = lines.size() - 1;
-                    if (!command.isValidArgsCount(argsCount)) {
-                        executeSuccessful = false;
-                        break;
-                    }
+                    Command command = checkAndReturnCommand(lines);
                     if (command == Command.ADD || command == Command.UPDATE) {
                         List<String> params = new LinkedList<>();
                         for (int i = 0; i < Product.INPUT_FIELD_COUNT; i++) {
                             String line = br.readLine();
-                            if (line == null || Command.isValidCommand(line.split(" ")[0])) {
-                                break;
-                            }
+                            checkLine(line);
                             params.add(line);
                         }
-                        if (params.size() == Product.INPUT_FIELD_COUNT) {
-                            Product product = createProductFromList(params);
-                            if (product != null) {
-                                if (command == Command.ADD) {
-                                    ProductsManager.add(product);
-                                } else {
-                                    Integer idForUpdate = Integer.parseInt(lines.get(1));
-                                    ProductsManager.update(product, idForUpdate);
-                                }
-                                return;
-                            }
-                        }
-                        executeSuccessful = false;
+                        addUpdateProductFromScript(command, params, Integer.parseInt(lines.get(1)));
                     } else {
-                        doCommand(command, lines.subList(1, lines.size()));
+                        executeCommand(command, lines.subList(1, lines.size()));
                     }
                 } catch (IllegalArgumentException e) {
                     executeSuccessful = false;
@@ -337,15 +339,8 @@ public final class Console {
                     break;
                 }
                 lines = Arrays.asList(strings.split(" "));
-
             }
-            if (executeSuccessful) {
-                System.out.println(MsgConsts.SUCCESSFUL_MSG);
-            } else {
-                ProductsManager.load(ProductsManager.BACKUP_NAME);
-                System.out.println(MsgConsts.ERROR_EXECUTE_SCRIPT_MSG);
-            }
-
+            printExecuteResult(executeSuccessful);
         } catch (FileNotFoundException e) {
             System.out.println(MsgConsts.FILE_NOT_FOUND_MSG);
         } catch (IOException e) {
@@ -353,15 +348,97 @@ public final class Console {
         }
     }
 
+    /**
+     * Выводит результат команды execute_script
+     *
+     * @param isSuccessful значение, показывающее успешность работы команды
+     */
+    private static void printExecuteResult(boolean isSuccessful) {
+        if (isSuccessful) {
+            System.out.println(MsgConsts.SUCCESSFUL_MSG);
+        } else {
+            System.out.println(MsgConsts.ERROR_EXECUTE_SCRIPT_MSG);
+        }
+    }
 
+    /**
+     * Выполняет команду из файла
+     *
+     * @param command команда
+     * @param lines   строка
+     */
+    private static void executeCommand(Command command, List<String> lines) {
+        ARGS.clear();
+        ARGS.addAll(lines);
+        doCommand(command);
+    }
+
+    /**
+     * Проверка команды
+     *
+     * @param lines строка из файла
+     * @return возвращает команду, если все успешно
+     * @throws IllegalArgumentException
+     */
+    private static Command checkAndReturnCommand(List<String> lines) throws IllegalArgumentException {
+        if (lines.get(0).isEmpty() || lines.get(0) == null) {
+            throw new IllegalArgumentException();
+        }
+        Command command = Command.valueOf(lines.get(0).toUpperCase());
+        if (!command.isValidArgsCount(lines.size() - 1)) {
+            throw new IllegalArgumentException();
+        }
+        return command;
+    }
+
+    /**
+     * Проверка на пустоту строки
+     *
+     * @param line строка из файла
+     * @throws IllegalArgumentException
+     */
+
+    private static void checkLine(String line) throws IllegalArgumentException {
+        if (line == null || Command.isValidCommand(line.split(" ")[0])) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * Создание продукта
+     *
+     * @param command   название команды
+     * @param params    параметры создания продукта
+     * @param productId id продукта
+     */
+    private static void addUpdateProductFromScript(Command command, List<String> params, Integer productId) {
+        if (params.size() == Product.INPUT_FIELD_COUNT) {
+            Product product = createProductFromList(params);
+            if (product != null) {
+                if (command == Command.ADD) {
+                    ProductsManager.add(product);
+                } else {
+                    ProductsManager.update(product, productId);
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * Создание продукта
+     *
+     * @param parameters параметры
+     * @return возвращает созданный продукт
+     */
     public static Product createProductFromList(List<String> parameters) {
         try {
             String name = ReadProps.checkAndReturnValue(parameters.get(NAME_INDEX), String.class, false);
             Float x = ReadProps.checkAndReturnValue(parameters.get(X_INDEX), float.class, false);
             Long y = ReadProps.checkAndReturnValue(parameters.get(Y_INDEX), long.class, false);
             Double price = ReadProps.checkAndReturnValue(parameters.get(PRICE_INDEX), Double.class, false);
-            String partNumber = ReadProps.checkAndReturnValue(parameters.get(PURT_NUMBER_INDEX), String.class, false);
-            Integer manufactureCost = ReadProps.checkAndReturnValue(parameters.get(MANNUFACTURE_COST_INDEX), Integer.class, false);
+            String partNumber = ReadProps.checkAndReturnValue(parameters.get(PART_NUMBER_INDEX), String.class, false);
+            Integer manufactureCost = ReadProps.checkAndReturnValue(parameters.get(MANUFACTURE_COST_INDEX), Integer.class, false);
             UnitOfMeasure unitOfMeasure = ReadProps.checkAndReturnValue(parameters.get(UNIT_OF_MEASURE_INDEX), UnitOfMeasure.class, false);
             String nameOrganization = ReadProps.checkAndReturnValue(parameters.get(NAME_ORGANIZATION_INDEX), String.class, false);
             String fullName = ReadProps.checkAndReturnValue(parameters.get(FULL_NAME_INDEX), String.class, false);

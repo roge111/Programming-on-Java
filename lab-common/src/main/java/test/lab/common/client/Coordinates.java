@@ -17,6 +17,12 @@ public class Coordinates {
         return x;
     }
 
+    /**
+     * Возвращает x производства
+     *
+     * @param x объект, который будем сравнивать
+     * @return
+     */
     public void setX(float x) {
         this.x = x;
     }
@@ -25,6 +31,12 @@ public class Coordinates {
         return y;
     }
 
+    /**
+     * Возвращает y производства
+     *
+     * @param y объект, который будем сравнивать
+     * @return
+     */
     public void setY(long y) {
         this.y = y;
     }

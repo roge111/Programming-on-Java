@@ -8,12 +8,12 @@ public enum Command {
     UPDATE(1),
     REMOVE_BY_ID(1),
     CLEAR(0),
-    SAVE(0),
+    SAVE(1),
     EXECUTE_SCRIPT(1),
     EXIT(0),
     REMOVE_FIRST(0),
     HEAD(0),
-    REMOVE_GREATER(2),
+    REMOVE_GREATER(1),
     REMOVE_ALL_BY_MANUFACTURE_COST(1),
     COUNT_BY_MANUFACTURER(1),
     COUNT_GREATER_THAN_MANUFACTURER(1);
@@ -28,6 +28,12 @@ public enum Command {
         return this.argsCount == count;
     }
 
+    /**
+     * Преобразует введенное название команды из строки в соответствующий класс Command, и возвращает true, если все успешно
+     *
+     * @param command название команды
+     * @return
+     */
     public static boolean isValidCommand(String command) {
         try {
             Command.valueOf(command);

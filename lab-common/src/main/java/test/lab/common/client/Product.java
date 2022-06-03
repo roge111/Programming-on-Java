@@ -1,6 +1,7 @@
 package test.lab.common.client;
 
 import org.jetbrains.annotations.NotNull;
+import test.lab.common.utils.ProductsManager;
 
 import java.util.Date;
 import java.util.Objects;
@@ -8,7 +9,6 @@ import java.util.Comparator;
 
 public class Product implements Comparable<Product> {
     public static final int INPUT_FIELD_COUNT = 15;
-    private static Integer countId = 1;
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -26,7 +26,7 @@ public class Product implements Comparable<Product> {
 
 
     public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
-        this.id = countId++;
+        this.id = ProductsManager.getNewProductId();
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = new Date();
@@ -42,18 +42,20 @@ public class Product implements Comparable<Product> {
         return id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public static void setCountId(Integer countId) {
-        Product.countId = countId;
     }
 
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -62,6 +64,9 @@ public class Product implements Comparable<Product> {
         return coordinates;
     }
 
+    /**
+     * @param coordinates
+     */
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
@@ -70,6 +75,9 @@ public class Product implements Comparable<Product> {
         return creationDate;
     }
 
+    /**
+     * @param creationDate
+     */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
@@ -78,6 +86,9 @@ public class Product implements Comparable<Product> {
         return price;
     }
 
+    /**
+     * @param price
+     */
     public void setPrice(double price) {
         this.price = price;
     }
@@ -86,6 +97,9 @@ public class Product implements Comparable<Product> {
         return partNumber;
     }
 
+    /**
+     * @param partNumber
+     */
     public void setPartNumber(String partNumber) {
         this.partNumber = partNumber;
     }
@@ -94,6 +108,9 @@ public class Product implements Comparable<Product> {
         return manufactureCost;
     }
 
+    /**
+     * @param manufactureCost
+     */
     public void setManufactureCost(Integer manufactureCost) {
         this.manufactureCost = manufactureCost;
     }
@@ -102,6 +119,9 @@ public class Product implements Comparable<Product> {
         return unitOfMeasure;
     }
 
+    /**
+     * @param unitOfMeasure
+     */
     public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
         this.unitOfMeasure = unitOfMeasure;
     }
@@ -110,10 +130,16 @@ public class Product implements Comparable<Product> {
         return manufacturer;
     }
 
+    /**
+     * @param manufacturer
+     */
     public void setManufacturer(Organization manufacturer) {
         this.manufacturer = manufacturer;
     }
 
+    /**
+     * @param product
+     */
     public void updateProduct(Product product) {
         this.name = product.name;
         this.coordinates = product.coordinates;
@@ -124,6 +150,10 @@ public class Product implements Comparable<Product> {
         this.unitOfMeasure = product.unitOfMeasure;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -158,11 +188,18 @@ public class Product implements Comparable<Product> {
         return Objects.hash(id, name, coordinates, creationDate, manufacturer);
     }
 
+    /**
+     * Возвращает 0 если объекты равны, иначе -1 - объект первый меньше втоорого, иначе 1
+     *
+     * @param o объект, который будем сравнивать
+     * @return
+     */
     public int compareTo(@NotNull Product o) {
         return Comparator.comparing(Product::getName)
                 .thenComparing(Product::getPrice)
                 .thenComparing(Product::getManufactureCost)
                 .thenComparing(Product::getUnitOfMeasure)
+                .thenComparing(Product::getManufacturer)
                 .compare(this, o);
     }
 }
