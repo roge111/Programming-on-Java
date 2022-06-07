@@ -15,6 +15,11 @@ public class Address implements Comparable<Address> {
         this.town = location;
     }
 
+    public Address(Address postalAddress) {
+        this.street = street;
+        this.town = new Location(postalAddress.town);
+    }
+
     public String getStreet() {
         return street;
     }
