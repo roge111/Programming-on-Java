@@ -7,7 +7,6 @@ import test.lab.common.client.Location;
 import test.lab.common.client.Organization;
 import test.lab.common.client.OrganizationType;
 import test.lab.common.client.Product;
-import test.lab.common.client.ProductComparableProperty;
 import test.lab.common.client.UnitOfMeasure;
 import test.lab.common.utils.ProductsManager;
 import test.lab.common.utils.ReadProps;
@@ -28,7 +27,6 @@ public final class Console {
     public final List<String> args = new LinkedList<>();
     private final ProductsManager productsManager = new ProductsManager();
     private final Map<Command, Runnable> commands = new HashMap<>();
-
 
     public Console() {
         commands.put(Command.ADD, CONSOLE::addProduct);
@@ -138,28 +136,8 @@ public final class Console {
 
     public void removeGreater() {
         try {
-            ProductComparableProperty pcp = ProductComparableProperty.valueOf(args.get(0));
-            Object value;
-            switch (pcp) {
-                case ID:
-                    System.out.println(MsgConsts.GET_ID_MSG);
-                    value = SCANNER.nextInt();
-                    break;
-                case PRICE:
-                    System.out.println(MsgConsts.Product.PRICE);
-                    value = SCANNER.nextDouble();
-                    break;
-                case MANUFACTURE_COST:
-                    System.out.println(MsgConsts.Product.COST);
-                    value = SCANNER.nextDouble();
-                    break;
-                case ORGANIZATION:
-                    value = createOrganization();
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
-            if (productsManager.removeGreater(pcp, value)) {
+            Product product = createProduct();
+            if (productsManager.removeGreater(product)) {
                 System.out.println(MsgConsts.SUCCESSFUL_MSG);
             } else {
                 System.out.println(MsgConsts.ELEMENT_NOT_FOUND_MSG);
@@ -197,7 +175,8 @@ public final class Console {
         Integer manufactureCost = ReadProps.readManufactureCost();
         UnitOfMeasure unitOfMeasure = ReadProps.readUnitOfMeasure();
         return new Product(productsManager.getNewProductId(), name,
-                new Coordinates(x, y), price, partNumber, manufactureCost, unitOfMeasure, createOrganization());
+                new Coordinates(x, y), price, partNumber, unitOfMeasure, createOrganization())
+                .setManufactureCost(manufactureCost);
     }
 
     private Organization createOrganization() {

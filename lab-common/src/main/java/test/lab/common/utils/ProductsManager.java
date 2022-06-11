@@ -8,7 +8,6 @@ import test.lab.common.client.Location;
 import test.lab.common.client.Organization;
 import test.lab.common.client.OrganizationType;
 import test.lab.common.client.Product;
-import test.lab.common.client.ProductComparableProperty;
 import test.lab.common.client.UnitOfMeasure;
 
 import java.beans.XMLDecoder;
@@ -146,50 +145,8 @@ public final class ProductsManager {
                 .filter(p -> p.getManufacturer().getName().equals(manufacturer)).count();
     }
 
-    /**
-     * @param pcp
-     * @param value
-     * @return
-     */
-    public boolean removeGreater(ProductComparableProperty pcp, Object value) {
-        boolean isSuccessful = false;
-            switch (pcp) {
-                case PRICE:
-                    double price = Double.parseDouble(value.toString());
-                    isSuccessful = products.removeIf(p -> {
-                        Product p2 = new Product(p);
-                        p2.setPrice(price);
-                        return p.compareTo(p2) > 0;
-                    });
-                    break;
-                case ID:
-                    Integer id = Integer.parseInt(value.toString());
-                    isSuccessful = products.removeIf(p -> {
-                        Product p2 = new Product(p);
-                        p2.setId(id);
-                        return p.compareTo(p2) > 0;
-                    });
-                    break;
-                case MANUFACTURE_COST:
-                    Integer cost = Integer.parseInt(value.toString());
-                    isSuccessful = products.removeIf(p -> {
-                        Product p2 = new Product(p);
-                        p2.setManufactureCost(cost);
-                        return p.compareTo(p2) > 0;
-                    });
-                    break;
-                case ORGANIZATION:
-                    Organization organization = (Organization) value;
-                    isSuccessful = products.removeIf(p -> {
-                        Product p2 = new Product(p);
-                        p2.setManufacturer(organization);
-                        return p.compareTo(p2) > 0;
-                    });
-                    break;
-                default:
-                    break;
-            }
-        return isSuccessful;
+    public boolean removeGreater(Product product) {
+        return products.removeIf(p -> p.compareTo(product) > 0);
     }
 
     public void removeFirst() {
@@ -350,10 +307,11 @@ public final class ProductsManager {
             Float zLocation = ReadProps.checkAndReturnValue(parameters.get(Z_LOCATION_INDEX), Float.class, false);
             String nameLocation = ReadProps.checkAndReturnValue(parameters.get(NAME_LOCATION_INDEX), String.class, false);
 
-            return new Product(getNewProductId(), name, new Coordinates(x, y), price, partNumber, manufactureCost, unitOfMeasure,
+            return new Product(getNewProductId(), name, new Coordinates(x, y), price, partNumber, unitOfMeasure,
                     new Organization(getNewOrganizationId(), nameOrganization, fullName, type,
                             new Address(street,
-                                    new Location(xLocation, yLocation, zLocation, nameLocation))));
+                                    new Location(xLocation, yLocation, zLocation, nameLocation))))
+                    .setManufactureCost(manufactureCost);
         } catch (NumberFormatException ex) {
             return null;
         }
