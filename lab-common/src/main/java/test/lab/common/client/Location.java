@@ -20,6 +20,13 @@ public class Location implements Comparable<Location> {
 
     }
 
+    public Location(Location town) {
+        this.x = town.x;
+        this.y = town.y;
+        this.z = town.z;
+        this.name = town.name;
+    }
+
     public Integer getX() {
         return x;
     }
