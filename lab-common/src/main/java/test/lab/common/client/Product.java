@@ -35,13 +35,14 @@ public class Product implements Comparable<Product> {
     }
 
 
-    public Product(Integer id, String name, Coordinates coordinates, double price, String partNumber, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
+    public Product(Integer id, String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = new Date();
         this.price = price;
         this.partNumber = partNumber;
+        this.manufactureCost = manufacturerCost;
         this.unitOfMeasure = unitOfMeasure;
         this.manufacturer = manufacturer;
     }
@@ -120,9 +121,8 @@ public class Product implements Comparable<Product> {
     /**
      * @param manufactureCost
      */
-    public Product setManufactureCost(Integer manufactureCost) {
+    public void setManufactureCost(Integer manufactureCost) {
         this.manufactureCost = manufactureCost;
-        return this;
     }
 
     public UnitOfMeasure getUnitOfMeasure() {
@@ -218,6 +218,7 @@ public class Product implements Comparable<Product> {
             return result;
         }
         return manufacturer.compareTo(o.manufacturer);
+
     }
 }
 
