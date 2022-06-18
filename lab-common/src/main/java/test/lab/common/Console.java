@@ -28,22 +28,22 @@ public final class Console {
     private final ProductsManager productsManager = new ProductsManager();
     private final Map<Command, Runnable> commands = new HashMap<>();
 
-    public Console() {
-        commands.put(Command.ADD, CONSOLE::addProduct);
-        commands.put(Command.UPDATE, () -> CONSOLE.update(args.get(0)));
-        commands.put(Command.HELP, CONSOLE::help);
-        commands.put(Command.INFO, CONSOLE::info);
-        commands.put(Command.SAVE, () -> CONSOLE.save(args.get(0)));
-        commands.put(Command.REMOVE_BY_ID, () -> CONSOLE.removeById(args.get(0)));
-        commands.put(Command.SHOW, CONSOLE::show);
-        commands.put(Command.CLEAR, CONSOLE::clear);
-        commands.put(Command.EXECUTE_SCRIPT, () -> CONSOLE.executeScript(args.get(0)));
-        commands.put(Command.HEAD, CONSOLE::head);
-        commands.put(Command.REMOVE_FIRST, CONSOLE::removeFirst);
-        commands.put(Command.REMOVE_GREATER, CONSOLE::removeGreater);
-        commands.put(Command.REMOVE_ALL_BY_MANUFACTURE_COST, () -> CONSOLE.removeAllByManufactureCost(args.get(0)));
-        commands.put(Command.COUNT_BY_MANUFACTURER, () -> CONSOLE.countByManufacturer(args.get(0)));
-        commands.put(Command.COUNT_GREATER_THAN_MANUFACTURER, () -> CONSOLE.countGreaterThanManufacturer(args.get(0)));
+     public Console() {
+        commands.put(Command.ADD, this ::addProduct);
+        commands.put(Command.UPDATE, () -> this.update(args.get(0)));
+        commands.put(Command.HELP, this::help);
+        commands.put(Command.INFO, this::info);
+        commands.put(Command.SAVE, () -> this.save(args.get(0)));
+        commands.put(Command.REMOVE_BY_ID, () -> this.removeById(args.get(0)));
+        commands.put(Command.SHOW, this::show);
+        commands.put(Command.CLEAR, this::clear);
+        commands.put(Command.EXECUTE_SCRIPT, () -> this.executeScript(args.get(0)));
+        commands.put(Command.HEAD, this::head);
+        commands.put(Command.REMOVE_FIRST, this::removeFirst);
+        commands.put(Command.REMOVE_GREATER, this::removeGreater);
+        commands.put(Command.REMOVE_ALL_BY_MANUFACTURE_COST, () -> this.removeAllByManufactureCost(args.get(0)));
+        commands.put(Command.COUNT_BY_MANUFACTURER, () -> this.countByManufacturer(args.get(0)));
+        commands.put(Command.COUNT_GREATER_THAN_MANUFACTURER, () -> this.countGreaterThanManufacturer(args.get(0)));
         commands.put(Command.EXIT, Console::exit);
     }
 
