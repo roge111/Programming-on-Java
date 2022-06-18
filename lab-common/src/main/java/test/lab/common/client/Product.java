@@ -91,7 +91,7 @@ public class Product implements Comparable<Product> {
         this.creationDate = creationDate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
