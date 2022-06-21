@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Address implements Comparable<Address> {
     private String street;
-    private test.lab.common.client.Location town;
+    private Location town;
 
     public Address() {
 
@@ -13,6 +13,11 @@ public class Address implements Comparable<Address> {
     public Address(String street, Location location) {
         this.street = street;
         this.town = location;
+    }
+
+    public Address(Address postalAddress) {
+        this.street = postalAddress.street;
+        this.town = new Location(postalAddress.town);
     }
 
     public String getStreet() {

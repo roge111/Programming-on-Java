@@ -34,6 +34,7 @@ public final class MsgConsts {
     public static final String ELEMENT_NOT_FOUND_MSG = "Таких элементов не найдено";
     public static final String ERROR_GET_BY_ID_MSG = "Элемент с данным ID не найден";
     public static final String ERROR_EXECUTE_SCRIPT_MSG = "Скрипт не выполнен";
+    public static final String INPUT_ERROR_MSG = "Ошибка ввода. Выход из программы.";
     public static final String INIT_ERROR_MSG = "Не удалось проинициализировать список";
     public static final String ERROR_ENV_PATH_MSG = "Неверная переменная окружения";
     public static final String HELP_MSG =
