@@ -120,8 +120,9 @@ public class Product implements Comparable<Product> {
     /**
      * @param manufactureCost
      */
-    public void setManufactureCost(Integer manufactureCost) {
+    public Product setManufactureCost(Integer manufactureCost) {
         this.manufactureCost = manufactureCost;
+        return this;
     }
 
     public UnitOfMeasure getUnitOfMeasure() {
