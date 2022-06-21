@@ -10,7 +10,7 @@ import test.lab.common.client.Product;
 import test.lab.common.client.UnitOfMeasure;
 
 import java.util.List;
-// Проверка
+
 public final class ReadProps {
     private static final int NAME_INDEX = 0;
     private static final int X_INDEX = 1;
