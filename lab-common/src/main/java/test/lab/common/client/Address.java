@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Address implements Comparable<Address> {
     private String street;
-    private test.lab.common.client.Location town;
+    private Location town;
 
     public Address() {
 
@@ -13,6 +13,11 @@ public class Address implements Comparable<Address> {
     public Address(String street, Location location) {
         this.street = street;
         this.town = location;
+    }
+
+    public Address(Address postalAddress) {
+        this.street = postalAddress.street;
+        this.town = new Location(postalAddress.town);
     }
 
     public String getStreet() {
@@ -50,13 +55,19 @@ public class Address implements Comparable<Address> {
 
     @Override
     public int compareTo(Address o) {
-        int result = street.compareTo(o.street);
+        int result;
+        if (this.street == null) {
+            result = o.street == null ? 0 : -1;
+        } else {
+            result = street.compareTo(o.street);
+        }
         if (result != 0) {
             return result;
         }
-        return town.compareTo(o.town);
-//        return Comparator.comparing(Address::getStreet)
-//                .thenComparing(Address::getTown)
-//                .compare(this, o);
+        if (this.town == null) {
+            return o.town == null ? 0 : -1;
+        } else {
+            return town.compareTo(o.town);
+        }
     }
 }
