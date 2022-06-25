@@ -1,5 +1,5 @@
 package test.lab.common.client;
-//Проверка
+
 
 public class Location implements Comparable<Location> {
     private Integer x; //Поле не может быть null
