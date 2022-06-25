@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-//Проверка
 public final class ProductsManager {
 
     private static final String FILE_PATH = "LabFilePath";
