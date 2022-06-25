@@ -20,6 +20,13 @@ public class Location implements Comparable<Location> {
 
     }
 
+    public Location(Location town) {
+        this.x = town.x;
+        this.y = town.y;
+        this.z = town.z;
+        this.name = town.name;
+    }
+
     public Integer getX() {
         return x;
     }
@@ -72,14 +79,27 @@ public class Location implements Comparable<Location> {
      */
     @Override
     public int compareTo(Location o) {
-        int result = x.compareTo(o.x);
+        int result;
+        if (this.x == null) {
+            result = o.x == null ? 0 : -1;
+        } else {
+            result = x.compareTo(o.x);
+        }
         if (result != 0) {
             return result;
         }
-        result = y.compareTo(o.y);
+        if (this.y == null) {
+            result = o.y == null ? 0 : -1;
+        } else {
+            result = y.compareTo(o.y);
+        }
         if (result != 0) {
             return result;
         }
-        return z.compareTo(o.z);
+        if (this.z == null) {
+            return o.z == null ? 0 : -1;
+        } else {
+            return z.compareTo(o.z);
+        }
     }
 }

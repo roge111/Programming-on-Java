@@ -1,38 +1,46 @@
 package test.lab.common.utils;
 
+import test.lab.common.Console;
+import test.lab.common.client.Command;
 import test.lab.common.client.Organization;
 import test.lab.common.client.Product;
-import test.lab.common.client.ProductComparableProperty;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+//Проверка
 
 public final class ProductsManager {
-    private static final String FILE_PATH = "filepath.txt";
-    private static LinkedList<Product> products;
-    private static ZonedDateTime creationDate;
 
-    private ProductsManager() {
+    private static final String FILE_PATH = "LabFilePath";
+    private LinkedList<Product> products;
+    private ZonedDateTime creationDate;
+    private Console console;
+
+    public ProductsManager() {
     }
 
+    public ProductsManager(Console console) {
+        this.console = console;
+    }
 
-    public static boolean checkExist(Integer id) {
+    public boolean checkExist(Integer id) {
         return products.stream().anyMatch(p -> p.getId().equals(id));
     }
 
 
-    public static void initList() {
+    public void initList() {
         if (products == null) {
             products = new LinkedList<>();
             load();
@@ -56,18 +64,18 @@ public final class ProductsManager {
     /**
      * @param product
      */
-    public static void add(Product product) {
+    public void add(Product product) {
         products.add(product);
     }
 
-    public static Integer getNewProductId() {
+    public Integer getNewProductId() {
         if (products.size() > 0) {
             return products.getLast().getId() + 1;
         }
-        return 0;
+        return 1;
     }
 
-    public static Integer getNewOrganizationId() {
+    public Integer getNewOrganizationId() {
         if (products.size() > 0) {
             return products.getLast().getManufacturer().getId() + 1;
         }
@@ -78,83 +86,58 @@ public final class ProductsManager {
      * @param product
      * @param id
      */
-    public static void update(Product product, Integer id) {
-        products.stream().filter(p -> p.getId().equals(id)).findAny().get().updateProduct(product);
+    public boolean update(Product product, Integer id) {
+        if (checkExist(id)) {
+            Optional<Product> op = products.stream().filter(p -> p.getId().equals(id)).findAny();
+            if (op.isPresent()) {
+                op.get().updateProduct(product);
+                return true;
+            } else {
+                throw new RuntimeException();
+            }
+        }
+        return false;
     }
 
     /**
      * @param productId
      * @return
      */
-    public static boolean removeById(Integer productId) {
+    public boolean removeById(Integer productId) {
         return products.removeIf(p -> Objects.equals(p.getId(), productId));
     }
 
-    public static void clear() {
+    public void clear() {
         products.clear();
     }
 
-    public static Product head() {
+    public Product head() {
         return products.size() > 0 ? products.get(0) : null;
     }
 
-    /**
-     * @param manufacturer
-     * @return
-     */
-    public static int countGreaterThanManufacturer(String manufacturer) {
+    public int countGreaterThanManufacturer(Organization organization) {
         return (int) products.stream()
-                .filter(p -> p.getManufacturer().toString().compareTo(manufacturer) > 0).count();
+                .filter(p -> p.getManufacturer().compareTo(organization) > 0).count();
     }
 
     /**
      * @param mfc
      * @return
      */
-    public static boolean removeAllByManufactureCost(Integer mfc) {
+    public boolean removeAllByManufactureCost(Integer mfc) {
         return products.removeIf(p -> p.getManufactureCost().equals(mfc));
     }
 
-    public static int countByManufacturer(String manufacturer) {
+    public int countByManufacturer(Organization organization) {
         return (int) products.stream()
-                .filter(p -> p.getManufacturer().getName().equals(manufacturer)).count();
+                .filter(p -> p.getManufacturer().equals(organization)).count();
     }
 
-    /**
-     * @param pcp
-     * @param value
-     * @return
-     */
-    public static boolean removeGreater(ProductComparableProperty pcp, Object value) {
-        boolean isSuccessful = false;
-        try {
-            switch (pcp) {
-                case PRICE:
-                    double price = Double.parseDouble(value.toString());
-                    isSuccessful = products.removeIf(p -> p.getPrice() > price);
-                    break;
-                case ID:
-                    Integer id = Integer.parseInt(value.toString());
-                    isSuccessful = products.removeIf(p -> p.getId() > id);
-                    break;
-                case MANUFACTURE_COST:
-                    Integer cost = Integer.parseInt(value.toString());
-                    isSuccessful = products.removeIf(p -> p.getManufactureCost() > cost);
-                    break;
-                case ORGANIZATION:
-                    Organization organization = (Organization) value;
-                    isSuccessful = products.removeIf(p -> p.getManufacturer().compareTo(organization) > 0);
-                    break;
-                default:
-                    break;
-            }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-        }
-        return isSuccessful;
+    public boolean removeGreater(Product product) {
+        return products.removeIf(p -> p.compareTo(product) > 0);
     }
 
-    public static void removeFirst() {
+    public void removeFirst() {
         if (products.size() > 0) {
             products.removeFirst();
         }
@@ -163,36 +146,29 @@ public final class ProductsManager {
     /**
      * @param envVar
      */
-    public static void save(String envVar) {
-        String filePath = System.getenv(envVar);
-        try (FileOutputStream file = new FileOutputStream(filePath);
-             XMLEncoder encoder = new XMLEncoder(file)) {
+    public void save(String envVar) {
+        String env = envVar;
+        if (env == null) {
+            env = FILE_PATH;
+        }
+        String filePath = System.getenv(env);
+        try (XMLEncoder encoder = new XMLEncoder(new FileOutputStream(filePath))) {
             encoder.writeObject(products);
-            saveFilePath(filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NullPointerException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
-    /**
-     * @param filePath
-     * @throws FileNotFoundException
-     */
-    private static void saveFilePath(String filePath) throws FileNotFoundException {
-        PrintWriter printWriter = new PrintWriter(FILE_PATH);
-        printWriter.println(filePath);
-        printWriter.close();
-    }
-
     @SuppressWarnings("unchecked")
-    public static void load() {
+    public void load() {
         try {
-            String fileName = getFilePath();
+            String fileName = System.getenv(FILE_PATH);
             if (fileName == null) {
                 return;
             }
             File file = new File(fileName);
-            if (file.exists() && file.isFile()) {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            if (file.exists() && file.isFile() && br.readLine() != null) {
                 try (FileInputStream fileInputStream = new FileInputStream(fileName);
                      XMLDecoder decoder = new XMLDecoder(fileInputStream)) {
                     products = (LinkedList<Product>) decoder.readObject();
@@ -203,20 +179,131 @@ public final class ProductsManager {
         }
     }
 
-    private static String getFilePath() throws IOException {
-        File file = new File(FILE_PATH);
-        if (file.exists() && file.isFile()) {
-            return new BufferedReader(new InputStreamReader(new FileInputStream(FILE_PATH))).readLine();
-        }
-        return null;
-    }
-
-    public static ZonedDateTime getCreationDate() {
+    public ZonedDateTime getCreationDate() {
         return creationDate;
     }
 
-    public static LinkedList<Product> getProducts() {
+    public LinkedList<Product> getProducts() {
         return products;
+    }
+
+    /**
+     * Выполняет команды из файла
+     *
+     * @param path путь к файлу
+     */
+    public boolean executeScript(String path) {
+        boolean executeSuccessful = true;
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String strings = br.readLine();
+            if (strings == null) {
+                return false;
+            }
+            List<String> lines = Arrays.asList(strings.split(" "));
+            while (lines.size() > 0) {
+                try {
+                    Command command = checkAndReturnCommand(lines);
+                    if (command == Command.ADD || command == Command.UPDATE) {
+                        List<String> params = new LinkedList<>();
+                        for (int i = 0; i < Product.INPUT_FIELD_COUNT; i++) {
+                            params.add(checkLine(br.readLine()));
+                        }
+                        executeSuccessful = addUpdateProductFromScript(command, params, command == Command.ADD ? null : Integer.parseInt(lines.get(1)));
+                        if (!executeSuccessful) {
+                            return false;
+                        }
+                    } else {
+                        console.executeCommand(command, lines.subList(1, lines.size()));
+                    }
+                } catch (IllegalArgumentException e) {
+                    executeSuccessful = false;
+                    break;
+                }
+                strings = br.readLine();
+                if (strings == null) {
+                    break;
+                }
+                lines = Arrays.asList(strings.split(" "));
+            }
+            return executeSuccessful;
+        } catch (IOException e) {
+            System.out.println(MsgConsts.FILE_NOT_FOUND_MSG);
+        }
+        return false;
+    }
+
+    /**
+     * Проверка на пустоту строки
+     *
+     * @param line строка из файла
+     * @throws IllegalArgumentException
+     */
+
+    private static String checkLine(String line) throws IllegalArgumentException {
+        if (line == null || Command.isValidCommand(line.split(" ")[0])) {
+            throw new IllegalArgumentException();
+        }
+        return line;
+    }
+
+    /**
+     * Создание продукта
+     *
+     * @param command   название команды
+     * @param params    параметры создания продукта
+     * @param productId id продукта
+     */
+    private boolean addUpdateProductFromScript(Command command, List<String> params, Integer productId) {
+        if (params.size() == Product.INPUT_FIELD_COUNT) {
+            Product product = createProductFromList(params);
+            if (product != null) {
+                if (command == Command.ADD) {
+                    add(product);
+                    return true;
+                } else {
+                    return update(product, productId);
+                }
+            } else {
+                throw new IllegalArgumentException();
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Создание продукта
+     *
+     * @param parameters параметры
+     * @return возвращает созданный продукт
+     */
+    public Product createProductFromList(List<String> parameters) {
+        try {
+            Product p = ReadProps.readProductFromList(parameters);
+            p.setId(getNewProductId());
+            p.getManufacturer().setId(getNewOrganizationId());
+            return p;
+        } catch (NumberFormatException | ClassCastException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Проверка команды
+     *
+     * @param lines строка из файла
+     * @return возвращает команду, если все успешно
+     * @throws IllegalArgumentException
+     */
+    private static Command checkAndReturnCommand(List<String> lines) throws IllegalArgumentException {
+        if (lines.get(0).isEmpty() || lines.get(0) == null) {
+            throw new IllegalArgumentException();
+        }
+        Command command = Command.valueOf(lines.get(0).toUpperCase());
+        if (!command.isValidArgsCount(lines.size() - 1)) {
+            throw new IllegalArgumentException();
+        }
+        return command;
     }
 
 }

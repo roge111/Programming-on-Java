@@ -1,11 +1,9 @@
 package test.lab.common.client;
 
 import org.jetbrains.annotations.NotNull;
-import test.lab.common.utils.ProductsManager;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Comparator;
 
 public class Product implements Comparable<Product> {
     public static final int INPUT_FIELD_COUNT = 15;
@@ -13,7 +11,7 @@ public class Product implements Comparable<Product> {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private double price; //Значение поля должно быть больше 0
+    private Double price; //Значение поля должно быть больше 0
     private String partNumber; //Поле не может быть null
     private Integer manufactureCost; //Поле может быть null
     private UnitOfMeasure unitOfMeasure; //Поле не может быть null
@@ -24,15 +22,26 @@ public class Product implements Comparable<Product> {
 
     }
 
+    public Product(Product p) {
+        this.id = p.id;
+        this.name = p.name;
+        this.coordinates = p.coordinates;
+        this.creationDate = new Date();
+        this.price = p.price;
+        this.partNumber = p.partNumber;
+        this.manufactureCost = p.manufactureCost;
+        this.unitOfMeasure = p.unitOfMeasure;
+        this.manufacturer = new Organization(p.manufacturer);
+    }
 
-    public Product(String name, Coordinates coordinates, double price, String partNumber, Integer manufacturerCost, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
-        this.id = ProductsManager.getNewProductId();
+
+    public Product(Integer id, String name, Coordinates coordinates, double price, String partNumber, UnitOfMeasure unitOfMeasure, Organization manufacturer) {
+        this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = new Date();
         this.price = price;
         this.partNumber = partNumber;
-        this.manufactureCost = manufacturerCost;
         this.unitOfMeasure = unitOfMeasure;
         this.manufacturer = manufacturer;
     }
@@ -82,14 +91,14 @@ public class Product implements Comparable<Product> {
         this.creationDate = creationDate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
     /**
      * @param price
      */
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -195,12 +204,32 @@ public class Product implements Comparable<Product> {
      * @return
      */
     public int compareTo(@NotNull Product o) {
-        return Comparator.comparing(Product::getName)
-                .thenComparing(Product::getPrice)
-                .thenComparing(Product::getManufactureCost)
-                .thenComparing(Product::getUnitOfMeasure)
-                .thenComparing(Product::getManufacturer)
-                .compare(this, o);
+        int result1;
+        if (this.name == null) {
+            result1 = o.name == null ? 0 : -1;
+        } else {
+            result1 = name.compareTo(o.name);
+        }
+        if (result1 != 0) {
+            return result1;
+        }
+        if (this.price == null) {
+            result1 = o.price == null ? 0 : -1;
+        } else {
+            result1 = price.compareTo(o.price);
+        }
+        if (result1 != 0) {
+            return result1;
+        }
+        if (this.manufactureCost == null) {
+            result1 = o.manufactureCost == null ? 0 : -1;
+        } else {
+            result1 = manufactureCost.compareTo(o.manufactureCost);
+        }
+        if (result1 != 0) {
+            return result1;
+        }
+        return this.manufacturer == null ? o.manufacturer == null ? 0 : -1 : manufacturer.compareTo(o.manufacturer);
     }
 }
 

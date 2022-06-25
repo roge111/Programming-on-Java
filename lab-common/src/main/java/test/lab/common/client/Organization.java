@@ -1,8 +1,6 @@
 package test.lab.common.client;
 
 
-import test.lab.common.utils.ProductsManager;
-
 public class Organization implements Comparable<Organization> {
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -14,12 +12,21 @@ public class Organization implements Comparable<Organization> {
 
     }
 
-    public Organization(String name, String fullName, OrganizationType type, Address postalAddress) {
-        this.id = ProductsManager.getNewOrganizationId();
+    public Organization(Integer id, String name, String fullName, OrganizationType type, Address postalAddress) {
+        this.id = id;
         this.name = name;
         this.fullName = fullName;
         this.type = type;
         this.postalAddress = postalAddress;
+    }
+
+    public Organization(Organization m) {
+        this.id = m.id;
+        this.name = m.name;
+        this.fullName = m.fullName;
+        this.type = m.type;
+        this.postalAddress = new Address(m.postalAddress);
+
     }
 
 
@@ -85,21 +92,27 @@ public class Organization implements Comparable<Organization> {
      * @return
      */
     public int compareTo(Organization o) {
-        int result = name.compareTo(o.name);
+        int result;
+        if (this.name == null) {
+            result = o.name == null ? 0 : -1;
+        } else {
+            result = name.compareTo(o.name);
+        }
         if (result != 0) {
             return result;
         }
-        result = fullName.compareTo(o.fullName);
+        if (this.fullName == null) {
+            result = o.fullName == null ? 0 : -1;
+        } else {
+            result = fullName.compareTo(o.fullName);
+        }
         if (result != 0) {
             return result;
         }
-        return postalAddress.compareTo(o.postalAddress);
-
-
-//        return Comparator.comparing(Organization::getName)
-//                .thenComparing(Organization::getFullName)
-//                .thenComparing(Organization::getPostalAddress)
-//                .thenComparing(Organization::getId)
-//                .compare(this, o);
+        if (this.postalAddress == null) {
+            return o.postalAddress == null ? 0 : -1;
+        } else {
+            return postalAddress.compareTo(o.postalAddress);
+        }
     }
 }

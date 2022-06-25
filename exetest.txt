@@ -1,2 +1,17 @@
 help
-show
+add
+product name
+22
+21
+22
+33
+32
+LITERS
+manuf
+full name
+PUBLIC
+
+2
+2
+2
+city
